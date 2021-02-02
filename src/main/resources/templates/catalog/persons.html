@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Список ответственных лиц</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/person-mod :: person-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>ФИО</th>
+                        <th>Должность</th>
+                        <th>Подразделение</th>
+                        <th>Номер приказа</th>
+                        <th>Дата приказа</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="person, state : ${persons}">
+                        <td th:utext="${state.count}"></td>
+                        <td class="left" th:utext="${person.getFio()}"></td>
+                        <td class="left" th:utext="${person.getPosition()}"></td>
+                        <td th:utext="${person.getDepartmentShortName()}"></td>
+                        <td th:utext="${person.getOrderNumber()}"></td>
+                        <td th:utext="${person.getOrderDate()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${person.getId()} + ', \'person\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${person.getId()} + ', \'person\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

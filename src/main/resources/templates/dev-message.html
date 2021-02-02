@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:fragment="dev-message">
+    <link href="styles/noty/noty-theme.css" rel="stylesheet">
+    <link href="styles/noty/noty.css" rel="stylesheet">
+    <script src="scripts/noty/noty.js" type="text/javascript"></script>
+
+    <script>
+        function generate(text, type, layout, time) {
+            new Noty({
+                text        : text,
+                type        : type,
+                dismissQueue: true,
+                timeout		: time,
+                progressBar	: true,
+                layout      : layout,
+                theme       : 'bootstrap-v4'
+            }).show();
+            Noty.setMaxVisible(18);
+        }
+
+        generate('Система находится в стадии разработки. В сообщениях ниже будет информация о проделанной работе и новых функциях.', 'success', 'topRight', 9000);
+        generate('Реализован функционал справочников.', 'success', 'topRight', 11000);
+        generate('Реализован раздел "Сопроводительные паспорта" (без возможности формирования excel-файла).', 'success', 'topRight', 13000);
+        generate('Реализован раздел "Журнал СП" (без возможности формирования excel-файла).', 'success', 'topRight', 15000);
+        generate('Реализован раздел "ПОД 9" (без возможности формирования excel-файла).', 'success', 'topRight', 17000);
+    </script>
+</div>
+</html>

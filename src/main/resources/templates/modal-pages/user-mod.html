@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="user-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id = 'id' readonly hidden>
+                            <table class="data-editing">
+                                <tr>
+                                    <td class="right">ФИО: </td>
+                                    <td><input type="text" class="data-el" name="fio" id="fio"></td>
+                                    <td><span class="red" id="fioErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Имя пользователя: </td>
+                                    <td><input type="text" class="data-el" name="userName" id="userName"></td>
+                                    <td><span class="red" id="userNameErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Пароль: </td>
+                                    <td><input type="text" class="data-el" name="password" id="password"></td>
+                                    <td><span class="red" id="passwordErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Роль: </td>
+                                    <td>
+                                        <select class="data-el" name="roleId">
+                                            <option th:each="role : ${roles}"
+                                                    th:value="${role.getId()}"
+                                                    th:utext="${role.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">E-mail: </td>
+                                    <td><input type="text" class="data-el" name="email" id="email"></td>
+                                    <td><span class="red" id="emailErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Подразделение: </td>
+                                    <td>
+                                        <select class="data-el" name="departmentId">
+                                            <option th:each="department : ${departments}"
+                                                    th:value="${department.getId()}"
+                                                    th:utext="${department.getShortName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Статус: </td>
+                                    <td>
+                                        <input type="radio" class="data-el radio" name="activated" value="true" checked id="activated"> Активный <br>
+                                        <input type="radio" class="data-el radio" name="activated" value="false" id="activated1"> Заблокированый
+                                    </td>
+                                    <td><span class="red" id="activatedErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('user')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

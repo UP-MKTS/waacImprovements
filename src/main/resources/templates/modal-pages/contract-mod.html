@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contract-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id = 'id' readonly hidden>
+                            <table class="data-editing">
+                                <tr>
+                                    <td class="right">Организация: </td>
+                                    <td>
+                                        <select class="data-el" name="organizationId">
+                                            <option th:each="organization : ${organizations}"
+                                                    th:value="${organization.getId()}"
+                                                    th:utext="${organization.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red" id=""></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Номер договора: </td>
+                                    <td><input type="text" class="data-el" name="number" id="number"></td>
+                                    <td><span class="red" id="numberErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Дата договора: </td>
+                                    <td><input type="date" class="data-el" name="contractDate" id="contractDate"></td>
+                                    <td><span class="red" id="contractDateErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('contract')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

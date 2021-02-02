@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fill-weight-mod">
+    <div class="dm-overlay" id="WeightModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal modal-ap-weight">
+                    <a href="#close" class="close" onclick="pageReloadJournal()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Ввод данных о количестве отходов</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <table class="data-view" id="APWeightData">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>№ СП</th>
+                                    <th>Дата СП</th>
+                                    <th>Код отхода</th>
+                                    <th>Получатель отходов</th>
+                                    <th th:width="170px">Передано на:</th>
+                                    <th th:width="100px">Количество</th>
+                                </tr>
+                                </thead>
+                                    <tbody >
+
+                                    </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

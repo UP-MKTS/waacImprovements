@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/pod10.css" rel="stylesheet">
+                <script src="scripts/pod10-manager.js"></script>
+                <div class="upContainer">
+                    <!--<div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick=""><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>-->
+
+                    <div class="preTableContainer dep-container">
+                        <span class="text-size-18">Месяц: </span>
+                        <input type="month" class="pod10-title-sel" id="Pod10Date" onchange="changeDate()" th:value="${yearMonth}" />
+                    </div>
+
+                    <div class="title">
+                        <h4>ПОД-10</h4>
+                    </div>
+                </div>
+
+                <!--<div th:insert="modal-pages/pod9-own-waste-mod :: pod9-own-waste-mod"></div>-->
+
+                <table class="data-view" id="data-view">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">№</th>
+                        <th rowspan="2" width="100px">Дата внесения учетной записи в книгу учета отходов</th>
+                        <th rowspan="2">Наименование отхода</th>
+                        <th rowspan="2" width="100px">Код отхода</th>
+                        <th rowspan="2" width="100px">Степень опасности или класс опасности отхода</th>
+                        <th rowspan="2" width="150px">Норматив образования отходов</th>
+                        <th rowspan="2" width="100px">Структурные подразделения, в которых образовался данный вид отхода</th>
+                        <th rowspan="2" class="vertical-td"><span>Образовалось, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Поступило от других организаций, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Поступило от физических лиц, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Использовано, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Обезврежено, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Направлено на хранение, т (шт.)</span></th>
+                        <th rowspan="2" class="vertical-td"><span>Захоронено, т (шт.)</span></th>
+                        <th colspan="4">Передано, т (шт.)</th>
+                        <th rowspan="2" class="vertical-td"><span>Хранится, т (шт.)</span></th>
+                        <!--<th class="actions" rowspan="2"></th>-->
+                    </tr>
+                    <tr>
+                        <th class="vertical-td"><span>на исполь- зование</span></th>
+                        <th class="vertical-td"><span>на обезвре- живание</span></th>
+                        <th class="vertical-td"><span>на хранение</span></th>
+                        <th class="vertical-td"><span>на захо- ронение</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(pod10)}">
+                        <td th:colspan="19">Нет данных</td>
+                    </tr>
+                    <tr th:each="pod10, state : ${pod10.getDtoList()}">
+                        <td th:utext="${state.count}"></td>
+<!--                        <td th:utext="${pod10.getRecordData()}"></td>-->
+                        <td>Date</td>
+                        <td th:utext="${pod10.getWasteName()}" th:class="left"></td>
+                        <td th:utext="${pod10.getWasteCode()}"></td>
+                        <td th:utext="${pod10.getPowAndClassDanger()}"></td>
+                        <td th:utext="${pod10.getWasteNorm()}" th:class="left"></td>
+                        <td th:utext="${pod10.getDepartmentNames()}"></td>
+                        <td th:utext="${pod10.getSumGenerate()}"></td>
+                        <td th:utext="${pod10.getSumCountFromOther()}"></td>
+                        <td th:utext="${pod10.getSumCountFromPeople()}"></td>
+                        <td th:utext="${pod10.getSumCountUsed()}"></td>
+                        <td th:utext="${pod10.getSumCountNeutralized()}"></td>
+<!--                        <td th:utext="${pod10.getCountStored()}" style="color: #ff0000"></td>-->
+<!--                        <td th:utext="${pod10.getCountBuried()}"></td>-->
+                        <td>xxx</td>
+                        <td>xxx</td>
+                        <td th:utext="${pod10.getTransferredUsed()}"></td>
+                        <td th:utext="${pod10.getTransferredNeutralized()}"></td>
+                        <td th:utext="${pod10.getTransferredStored()}"></td>
+                        <td th:utext="${pod10.getTransferredBuried()}"></td>
+                        <td th:utext="${pod10.getKeeping()}"></td>
+                        <!--<td>
+                            <div th:if="${#lists.isEmpty(pod10.getAccompPasspId())}">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdate('+ ${pod10.getOwnWasteId()} + ', \'pod9\')'"></i>
+                                <i class="fa fa-copy fa-lg border" th:onclick="'duplicate('+ ${pod10.getOwnWasteId()} + ', \'pod9\')'"></i>
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${pod10.getOwnWasteId()} + ', \'pod9\')'"></i>
+                            </div>
+                        </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

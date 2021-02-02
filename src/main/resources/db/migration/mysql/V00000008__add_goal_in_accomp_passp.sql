@@ -1,0 +1,6 @@
+-- ALTER TABLE accomp_passp ADD COLUMN goal_id int null after weight_received_waste;
+-- update accomp_passp set goal_id = 1;
+--
+-- ALTER TABLE accomp_passp
+--     ADD CONSTRAINT accomp_passp_goal_fk FOREIGN KEY (goal_id)
+--         REFERENCES goals (goal_id) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,0 +1,4 @@
+-- ALTER TABLE accomp_passp DROP COLUMN weight_transported_waste;
+-- ALTER TABLE accomp_passp DROP COLUMN car_weight;
+--
+-- ALTER TABLE accomp_passp RENAME COLUMN weight_received_waste TO waste_weight;

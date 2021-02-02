@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <link href="styles/details-table.css" rel="stylesheet">
+                <script src="scripts/AP-details.js"></script>
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick="getNumber()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Сопроводительные паспорта</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/accomp-passp-mod :: accomp-passp-mod"></div>
+
+                <table class="data-view" id="data-view">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>№</th>
+                        <th>Номер СП</th>
+                        <th>Дата СП</th>
+                        <th>Подразделение</th>
+                        <th>Код отхода</th>
+                        <th>Получатель отходов</th>
+                        <th>Перевозчик отходов</th>
+                        <th width="40px"></th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:id = "'row_' + ${accompPassp.getId()}" th:each="accompPassp, state : ${accompPassps}">
+                        <td  th:onclick="'showDetails(' + this.parentNode.rowIndex + ', ' + ${accompPassp.getId()} + ')'"
+                             th:classappend="black"><i class="fa fa-caret-right"></i></td>
+                        <td th:utext="${state.count}"></td>
+                        <td th:utext="${accompPassp.getNumber()}"></td>
+                        <td th:utext="${accompPassp.getAccompPasspDate()}"></td>
+                        <td th:utext="${accompPassp.getDepartmentsShortName()}"
+                            th:tooltip-short="${accompPassp.getChiefPosition()} + ', ' + ${accompPassp.getChiefFio()}" flow="right"></td>
+                        <td th:utext="${accompPassp.getWasteCode()}"> <!--th:tooltip="${accompPassp.getWasteName()}" flow="right"--></td>
+                        <td class="left" th:utext="${accompPassp.getWasteDestination() != null} ?
+                            ${accompPassp.getRecipientOrganizationName()} + ', ' + ${accompPassp.getWasteDestination()} :
+                            ${accompPassp.getRecipientOrganizationName()}"></td>
+                        <td class="left" th:utext="${accompPassp.getCarrierOrganizationName()}"></td>
+                        <td>
+                            <div>
+                                <i class="fa fa-file-excel-o fa-lg border" th:onclick="'downloadFile('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="parent" >
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdate('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>&nbsp;
+                                <i class="fa fa-copy fa-lg border" th:onclick="'duplicate('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>
+                                <i class="fas fa-font fa-lg border" th:onclick="'test()'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="waste-type-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id = 'id' readonly hidden>
+                            <table class="data-editing">
+                                <tr>
+                                    <td class="right">Код: </td>
+                                    <td><input type="text" class="data-el" name="code" id="code"></td>
+                                    <td><span class="red" id="codeErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Наименование: </td>
+                                    <td><textarea cols="40" rows="3" class="data-el" name="name" id="name"></textarea></td>
+                                    <td><span class="red" id="nameErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Степень опасности: </td>
+                                    <td>
+                                        <select class="data-el" name="dangerousPowId">
+                                            <option th:each="dangerousPow : ${dangerousPows}"
+                                                    th:value="${dangerousPow.getId()}"
+                                                    th:utext="${dangerousPow.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Класс опасности: </td>
+                                    <td>
+                                        <select class="data-el" name="dangerousClassId">
+                                            <option th:each="dangerousClass : ${dangerousClasses}"
+                                                    th:value="${dangerousClass.getId()}"
+                                                    th:utext="${dangerousClass.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Вид деятельности: </td>
+                                    <td width="400px">
+                                        <select class="data-el" name="activityKindId">
+                                            <option th:each="activityKind : ${activityKinds}"
+                                                    th:value="${activityKind.getId()}"
+                                                    th:utext="${activityKind.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><span class="red"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Норматив образования: </td>
+                                    <td><textarea cols="40" rows="3" class="data-el" name="wasteNorm" id="wasteNorm"></textarea></td>
+                                    <td><span class="red" id="wasteNormErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('waste-type')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

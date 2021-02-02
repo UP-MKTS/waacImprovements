@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="depepartment-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text"class="data-el" name="id" id = 'id' readonly hidden>
+                            <table class="data-editing">
+                                <tr>
+                                    <td class="right">Полное название подразделения: </td>
+                                    <td><input type="text"class="data-el" name="fullName" id="fullName"></td>
+                                    <td><span class="red" id="fullNameErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Сокращенное название подразделения: </td>
+                                    <td><input type="text"class="data-el" name="shortName" id="shortName"></td>
+                                    <td><span class="red" id="shortNameErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">ФИО начальника: </td>
+                                    <td><input type="text"class="data-el" name="chiefFio" id="chiefFio"></td>
+                                    <td><span class="red" id="chiefFioErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Должность начальника: </td>
+                                    <td><input type="text"class="data-el" name="chiefPosition" id="chiefPosition"></td>
+                                    <td><span class="red" id="chiefPositionErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('department')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

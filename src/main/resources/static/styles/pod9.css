@@ -1,0 +1,55 @@
+.pod9-title-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.pod9-title-el {
+    display: block;
+    margin-top: auto;
+}
+
+.bottom_border {
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #444444;
+}
+
+.w-300 {
+    width: 10%;
+    min-width: 300px;
+}
+
+.w-800 {
+    width: 55%;
+    min-width: 800px;
+}
+
+.w-50p {
+    width: 49%;
+    min-width: 600px;
+}
+
+.w-100p {
+    width: 100%;
+}
+
+.pod9-title-sel {
+    margin: 0;
+    padding: 3px;
+    height: 30px;
+}
+
+.dep-container {
+    line-height: 55px;
+    width: 300px;
+    height: 55px;
+}
+
+.text-size-18 {
+    font-size: 18px;
+}
+
+.text-size-13 {
+    font-size: 13px;
+}

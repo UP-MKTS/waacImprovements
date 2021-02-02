@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Список действий с отходами</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/goal-mod :: goal-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Наименование действия</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="goal, state : ${goals}">
+                        <td th:utext="${state.count}"></td>
+                        <td class="left" th:utext="${goal.getName()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${goal.getId()} + ', \'goal\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${goal.getId()} + ', \'goal\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div>Внимание!!! Изменения в данном справочнике приведут к возникновению ошибок в коде!</div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+    <head th:fragment="header">
+        <title>ИС "Учет отходов"</title>
+
+        <link href="styles/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="styles/common.css" rel="stylesheet">
+        <link href="styles/data-table.css" rel="stylesheet">
+        <link href="styles/modal.css" rel="stylesheet">
+        <link href="styles/tooltip.css" rel="stylesheet">
+        <link href="styles/tooltip-short.css" rel="stylesheet">
+
+        <script src="scripts/data-manager.js"></script>
+        <script src="scripts/utils.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    </head>
+
+<body>
+    <div th:fragment="menu">
+        <link href="styles/menu.css" rel="stylesheet">
+
+        <nav>
+            <div class="logo"><i class="fa fa-leaf fa-5x logo"></i></div>
+            <ul>
+                <a href="accomp-passp" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')"><li>Сопроводительные паспорта</li></a>
+                <a href="accomp-passp-journal" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')"><li>Журнал СП</li></a>
+                <a href="pod10" sec:authorize="hasAnyAuthority('admin', 'editor','supervisor')"><li>ПОД-10</li></a>
+                <a href="pod9"><li>ПОД-9</li></a>
+                <a href="catalog" sec:authorize="hasAnyAuthority('admin', 'editor','supervisor')"><li>Справочники
+                    <!--<ul>
+                        <a href="waste-types"><li>Классификатор отходов</li></a>
+                        <a href="organizations"><li>Сторонние организации</li></a>
+                        <a href="adm-docs"><li>Распорядительные документы</li></a>
+                        <a href="activity-kinds"><li>Виды деятельности</li></a>
+                        <a href="dangerous-pow"><li>Степени опасности</li></a>
+                        <a href="goals"><li>Действия с отходами</li></a>
+                        <a href="persons"><li>Ответственных лиц</li></a>
+                        <a href="departments"><li>Подразделения</li></a>
+                        <a href="#"><li>Договора</li></a>
+                        <a href="users"><li sec:authorize="hasAnyAuthority('admin')">Пользователи</li></a>
+                    </ul>-->
+                </li></a>
+                <!--<li sec:authorize="hasAnyAuthority('admin', 'editor')">Архив
+                    <ul>
+                        <a href="#"><li>2020</li></a>
+                    </ul>
+                </li>-->
+                <a href="logout"><li class="out"><i class="fa fa-sign-out"></i> Выйти</li></a>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

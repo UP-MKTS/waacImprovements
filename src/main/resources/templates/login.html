@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>ИС "Учет отходов"</title>
+
+        <link href="styles/login/maxcdn.css" rel="stylesheet" id="bootstrap-css">
+
+        <!--Custom styles-->
+        <link rel="stylesheet" href="styles/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/login/login.css">
+    </head>
+    <body>
+        <!--<div th:if="${param.error}">
+            Invalid username and password.
+        </div>-->
+        <!--<div th:if="${param.logout}">
+            You have been logged out.
+        </div>-->
+        <!--<form th:action="@{/login}" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>-->
+
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Вход</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{login}" method="post">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend ">
+                                    <span><div class="user-ico"><i class="fa fa-user fa-lg"></i></div></span>
+                                </div>
+                                <input type="text" name="username" class="form-control" value="admin" placeholder="Имя Пользователя">
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span><div class="user-ico"><i class="fa fa-unlock-alt fa-lg"></i></div></span>
+                                </div>
+                                <input type="password" name="password" class="form-control" value="314mkts12" placeholder="Пароль">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Войти" class="btn float-right login_btn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--        <div th:insert="dev-message :: dev-message"></div>-->
+
+    </body>
+</html>

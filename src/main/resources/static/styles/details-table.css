@@ -1,0 +1,24 @@
+table.details-view{
+    width: 97%;
+    text-align: center;
+    font-size: 15px;
+    border-collapse: collapse;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    margin: 5px auto 5px auto;
+}
+
+table.details-view thead tr:first-child {
+    background: #9caba8;
+}
+
+table.details-view tr:last-child {
+    background: #fff;
+}
+
+table.details-view td {
+    font-size: 16px;
+}
+
+table.details-view tbody tr:hover {
+    background: #e6eef5;
+}

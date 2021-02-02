@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                        <input type="button" class="button" value="EXCEL" onclick="downloadCatalog('dangerous-class')">
+                    </div>
+
+                    <div class="title">
+                        <h4>Список классов опасности</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/dangerous-class-mod :: dangerous-class-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Наименование классов опасности</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dangerousClass, state : ${dangerousClasses}">
+                        <td th:utext="${state.count}"></td>
+                        <td class="left" th:utext="${dangerousClass.getName()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${dangerousClass.getId()} + ', \'dangerous-class\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${dangerousClass.getId()} + ', \'dangerous-class\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <p class="left">При совпадении наименований степени опасности и класса опасности, в отчет выводиться только наименование класса опасности.</p>
+            </div>
+        </div>
+    </body>
+</html>

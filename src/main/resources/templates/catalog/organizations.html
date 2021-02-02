@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Список организаций</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/organization-mod :: organization-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Наименование</th>
+                        <th>Адрес</th>
+                        <th>Место вывоза отхода</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="organization, state : ${organizations}">
+                        <td th:utext="${state.count}"></td>
+                        <td class="left" th:utext="${organization.getName()}"></td>
+                        <td class="left" th:utext="${organization.getAddress()}"></td>
+                        <td class="left" th:utext="${organization.getWasteDestination()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${organization.getId()} + ', \'organization\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${organization.getId()} + ', \'organization\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

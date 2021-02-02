@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body th:onload="createWeightTable()">
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <script src="scripts/AP-journal.js"></script>
+                <script src="scripts/AP-weight.js"></script>
+                <div class="upContainer flex-div">
+                    <div class="preTableContainer">
+                        <span class="text">Год: </span>
+                        <select onchange="changeJournalByYearAndMonth(this.value, document.getElementById('month').value)" id="year">
+                            <option th:each="year : ${years}"
+                                    th:value="${year}"
+                                    th:utext="${year}"></option>
+                        </select>
+
+                        <span class="text">Месяц: </span>
+                        <select onchange="changeJournalByYearAndMonth(document.getElementById('year').value, this.value)" id="month">
+                            <option th:each="month : ${months}"
+                                    th:value="${month.getMonthNumber()}"
+                                    th:utext="${month.getMonthName()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="title">
+                        <h4>Журнал сопроводительных паспортов</h4>
+                    </div>
+                    <div class="preTableContainer"  >
+                        <input type="button" class="button" value="EXCEL" onclick="downloadJournal('accomp-passp-journal',document.getElementById('year').value)">
+                    </div>
+                    <div class="preTableContainer">
+                        <a href="#WeightModal" class="btn"><button type="button" class="button"><i class="fa fa-cubes"></i> ВВОД КОЛИЧЕСТВА ОТХОДОВ</button></a>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/fill-weight-mod :: fill-weight-mod"></div>
+                <!--<div th:insert="modal-pages/accomp-passp-mod :: accomp-passp-mod"></div>-->
+
+                <table class="data-view" id="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Номер СП</th>
+                        <th>Дата перевозки</th>
+                        <th>Подразделение</th>
+                        <th>Номер договора</th>
+                        <th>Дата договора</th>
+                        <th>Получатель отходов</th>
+                        <th>Код отхода</th>
+                        <th>Класс опасности</th>
+                        <th>Переданно на:</th>
+                        <th>Количество, т (шт)</th>
+                        <th width="30px"></th>
+                    </tr>
+                    </thead>
+                    <tbody th:with="condition=${#lists.isEmpty(accompPassps)}">
+                        <tr th:if="${condition}">
+                            <td th:colspan="13">Нет данных</td>
+                        </tr>
+                        <span th:unless="${condition}" th:each="accompPassp, stateAcocmp : ${accompPassps}">
+                            <tr th:each="accompPasspWaste, stateWaste : ${accompPassp.getAccompPasspWasteDtoList()}">
+                                <td th:utext="${stateWaste.index + stateAcocmp.index+1}"></td>
+                                <td th:utext="${accompPassp.getAccompPasspNumber()}" th:tooltip-short="'Дата СП: ' + ${accompPassp.getAccompPasspDate()}" flow="right"></td>
+                                <td th:utext="${accompPassp.getTransportationDate()}"></td>
+                                <td th:utext="${accompPasspWaste.getDepartment().getShortName()}"></td>
+                                <td th:utext="${accompPassp.getContractNumber()}"></td>
+                                <td th:utext="${accompPassp.getContractDate()}"></td>
+                                <td class="left" th:utext="${accompPassp.getRecipientOrganizationName()}"></td>
+                                <td th:utext="${accompPasspWaste.getWasteTypeId().getCode()}"></td>
+                                <td th:utext="${accompPassp.getWasteDangerousClassName()}"></td>
+                                <td th:utext="${accompPasspWaste.getGoalName()}"></td>
+                                <td th:utext="${accompPasspWaste.getWasteWeight()}"></td>
+                                <td>
+                                    <div id="parent" >
+                                        <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateJournal('+ ${accompPasspWaste.getId()}+')'"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

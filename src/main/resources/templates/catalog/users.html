@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Список пользователей</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/user-mod :: user-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Online</th>
+                        <th>ФИО</th>
+                        <th>Имя пользователя</th>
+                        <th>Роль</th>
+                        <th>E-mail</th>
+                        <th>Подразделение</th>
+                        <th>Статус</th>
+                        <th>Пароль</th>
+                        <th>Дата входа</th>
+                        <th>Дата отключения</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user, state : ${users}">
+                        <td th:utext="${state.count}"></td>
+                        <td>
+                            <i class="fa fa-user-circle-o" th:classappend="${user.getLoginStatus()} ? green : red"></i>
+                        </td>
+                        <td class="left" th:utext="${user.getFio()}"></td>
+                        <td class="left" th:utext="${user.getUserName()}"></td>
+                        <td class="left" th:utext="${user.getRoleName()}"></td>
+                        <td class="left" th:utext="${user.getEmail()}"></td>
+                        <td class="left" th:utext="${user.getDepartmentShortName()}"></td>
+                        <td title="Статус пользователя: заблокирован / активен">
+                            <i class="fa" th:classappend="${user.getActivated()} ? 'fa-check green' : 'fa-ban red'"></i>
+                        </td>
+                        <td class="left" th:utext="${user.getPassword()}"></td>
+                        <td class="left" th:utext="${user.getDateLogin()}"></td>
+                        <td class="left" th:utext="${user.getDateDestroy()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${user.getId()} + ', \'user\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${user.getId()} + ', \'user\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

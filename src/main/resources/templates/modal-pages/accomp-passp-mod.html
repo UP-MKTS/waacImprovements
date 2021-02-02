@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="accomp-passp-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal modal-ap">
+                    <a href="#close" class="close" onclick="clearSave()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id='id' readonly hidden>
+<!--                            <input type="text" class="data-el" name="goalId" id='goalId' readonly hidden>-->
+<!--                            <input type="text" class="data-el" name="wasteWeight" id='wasteWeight' readonly hidden>-->
+                            <table class="data-editing">
+                                <tr>
+                                    <td width="200px" class="right">Номер СП: </td>
+                                    <td width="250px"><input type="text" min="1" max="99999" step="1" class="data-el" name="number" id="number"></td>
+                                    <td width="250px"><span class="red" id="numberErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Дата СП: </td>
+                                    <td><input type="date" class="data-el" name="accompPasspDate" id="accompPasspDate"></td>
+                                    <td><span class="red" id="accompPasspDateErr"></span></td>
+
+                                    <td class="right">Марка автомобиля: </td>
+                                    <td><input type="text" class="data-el" name="carModel" id="carModel"></td>
+                                    <td><span class="red" id="carModelErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td width="250px" class="right">Дата перевозки: </td>
+                                    <td width="150px"><input type="date" class="data-el" name="transportationDate" id="transportationDate"></td>
+                                    <td width="250px"><span class="red" id="transportationDateErr"></span></td>
+
+                                    <td class="right">Номер автомобиля: </td>
+                                    <td><input type="text" class="data-el" name="carNumber" id="carNumber"></td>
+                                    <td><span class="red" id="carNumberErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Получатель отходов и номер договора: </td>
+                                    <td>
+                                        <select class="data-el" name="contractId" id="contractId">
+                                            <option th:each="contract : ${contracts}"
+                                                    th:value="${contract.getId()}"
+                                                    th:utext="${contract.getOrganizationName()} + ', ' + ${contract.getNumber()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><div class="info-container" th:onmouseover="infoContr('contractId', 'contract')" flow="down" id="contract"><i class="fa fa-info-circle fa-lg gray"></i></div></td>
+
+                                    <td class="right">ФИО водителя: </td>
+                                    <td><input type="text" class="data-el" name="driverFio" id="driverFio"></td>
+                                    <td><span class="red" id="driverFioErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Перевозчик отходов: </td>
+                                    <td>
+                                        <select class="data-el" name="carrierOrganizationId" id="carrierOrganizationId">
+                                            <option th:each="organization : ${organizations}"
+                                                    th:value="${organization.getId()}"
+                                                    th:utext="${organization.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td><div class="info-container" th:onmouseover="infoOrg('carrierOrganizationId', 'carrier')" flow="down" id="carrier"><i class="fa fa-info-circle fa-lg gray"></i></div></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="right">Код отхода: </td>
+                                    <td>
+                                        <select class="data-el" name="wasteTypeId" id="wasteTypeId">
+                                            <option th:each="wasteType : ${wasteTypes}"
+                                                    th:value="${wasteType.getId()}"
+                                                    th:utext="${wasteType.getCode()}"></option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="waste-info-container">
+                                            <div class="info-container" th:onmouseover="infoWT('wasteTypeId', 'wasteType', 'name')" flow="up" id="wasteType">
+                                                <i class="fa fa-plus-circle fa-lg green" th:onclick="addRecord('wasteTypeId')"></i>&nbsp;
+                                                <i class="fa fa-info-circle fa-lg gray"></i>
+                                            </div>
+                                            <div class="error-container">
+                                                <span class="red" id="wasteTypeIdListErr"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Информация о паспорте:</td>
+                                </tr>
+                            </table>
+
+
+                            <div id="accompPasspInfo">
+
+                            </div>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('accomp-passp')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

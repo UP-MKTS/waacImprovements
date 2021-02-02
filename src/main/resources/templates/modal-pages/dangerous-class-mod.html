@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="dangerous-class-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id = 'id' readonly hidden>
+                            <table class="data-editing">
+                                <tr>
+                                    <td class="right">Наименование класса опасности: </td>
+                                    <td><input type="text" class="data-el" name="name" id="name"></td>
+                                    <td><span class="red" id="nameErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" th:onclick="save('dangerous-class')">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

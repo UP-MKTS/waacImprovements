@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/pod9.css" rel="stylesheet">
+                <script src="scripts/pod9-manager.js"></script>
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick="setCurrentValue()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                        <input type="button" class="button" value="EXCEL" onclick="downloadPod9('pod9')"><br>
+                        <input sec:authorize="hasAnyAuthority('admin','supervisor')" type="button" class="button" value="Не предоставили сведения" onclick="downloadSved()">
+                    </div>
+                    <div class="preTableContainer">
+                        <div class="preTableContainer dep-container">
+                            <span class="text-size-18">Месяц: </span>
+                            <input type="month" class="pod10-title-sel" id="Pod9Date" onchange="changeDepartment($('#department').val())" th:value="${yearMonth}" />
+                        </div>
+                    </div>
+                    <div class="preTableContainer dep-container">
+                        <span class="text-size-18">Подразделение: </span>
+                        <select class="pod9-title-sel" id = "department" onchange="changeDepartment(this.value)" sec:authorize="hasAnyAuthority('admin', 'editor','supervisor')">
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.getId()}"
+                                    th:utext="${department.getShortName()}"></option>
+                        </select>
+                        <select class="pod9-title-sel" id = "department" onchange="changeDepartment(this.value)" sec:authorize="hasAnyAuthority('user')">
+                            <option th:value="${departments[0].getId()}" th:utext="${departments[0].getShortName()}"></option>
+                        </select>
+<!--                        <b class="text-size-18" sec:authorize="hasAnyAuthority('user')" id = "department" th:text="${departments[0].getShortName()}"></b>-->
+                    </div>
+
+                    <div class="title">
+                        <h4>ПОД-9</h4>
+                    </div>
+                </div>
+
+                <div class="pod9-title-container">
+                    <div class="pod9-title-el w-800" th:with="condition=${not #lists.isEmpty(wasteTypes)}">
+                            <select class="pod9-title-sel w-100p" th:if="${condition}" id="wasteTypeName" onchange="changeWasteType(this.value)">
+                                <option th:each="wasteType : ${wasteTypes}"
+                                        th:value="${wasteType.getId()}"
+                                        th:utext="${wasteType.getName()}"></option>
+                            </select>
+                            <select class="pod9-title-sel w-100p" th:unless="${condition}" onchange="changeWasteType(this.value)">
+                                <option> нет данных</option>
+                            </select>
+                        <p class="text-size-13">(наименование отхода)</p>
+                    </div>
+
+                    <div class="pod9-title-el w-300">
+                         <span th:with="condition=${not #lists.isEmpty(wasteTypes)}">
+                            <select class="pod9-title-sel w-100p"  th:if="${condition}" id="wasteTypeCode" onchange="changeWasteType(this.value)">
+                                <option th:each="wasteType : ${wasteTypes}"
+                                        th:value="${wasteType.getId()}"
+                                        th:utext="${wasteType.getCode()}"></option>
+                            </select>
+                              <select class="pod9-title-sel w-100p" th:unless="${condition}" onchange="changeWasteType(this.value)">
+                                <option>Нет данных</option>
+                            </select>
+                        </span>
+                        <p class="text-size-13">(код отхода)</p>
+                    </div>
+
+                    <div class="pod9-title-el w-300" th:with="condition=${not #lists.isEmpty(wasteTypes)}">
+                        <p class="bottom_border text-size-18" id="dangerousPowAndClass"  th:if="${condition}" th:utext="${wasteTypes[0].getDangerousPowAndClassName()}"></p>
+                        <p class="bottom_border text-size-18" th:unless="${condition}"> нет данных</p>
+                        <p class="text-size-13">(cтепень и/или класс опасности отхода)</p>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="pod9-title-container">
+                    <div class="pod9-title-el w-50p" th:with="condition=${not #lists.isEmpty(wasteTypes)}">
+                        <p class="bottom_border text-size-18" id="wasteNorm" th:if="${condition}" th:utext="${wasteTypes[0].getWasteNorm()}"></p>
+                        <p class="bottom_border text-size-18" th:unless="${condition}" > нет данных</p>
+                        <p class="text-size-13">(норматив образования)</p>
+                    </div>
+
+                    <div class="pod9-title-el w-50p" th:with="condition=${not #lists.isEmpty(wasteTypes)}">
+                        <p class="bottom_border text-size-18" id="activityKind" th:if="${condition}" th:utext="${wasteTypes[0].getActivityKindName()}"></p>
+                        <p class="bottom_border text-size-18" th:unless="${condition}">нет данных</p>
+                        <p class="text-size-13">(наименование вида деятельности и (или) технологического процесса, в результате которого образуются отходы)</p>
+                    </div>
+                </div>
+
+                <br>
+
+                <div th:insert="modal-pages/pod9-own-waste-mod :: pod9-own-waste-mod"></div>
+
+                <table class="data-view" id="data-view">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">№</th>
+                        <th rowspan="2" width="100px">Дата</th>
+                        <th rowspan="2" width="115px">Образовалось т, (шт.)</th>
+                        <th colspan="2">Поступило от других организаций</th>
+                        <th rowspan="2" width="100px">Поступило от физ. лиц т, (шт.)</th>
+                        <th rowspan="2" width="100px">Использовано т, (шт.)</th>
+                        <th rowspan="2" width="100px">Обезврежено т, (шт.)</th>
+                        <th colspan="3">Передано на использование, обезвреживание, хранение, захоронение</th>
+                        <th rowspan="2" width="90px">Хранится т, (шт.)</th>
+                        <th class="actions" rowspan="2"></th>
+                    </tr>
+                    <tr>
+                        <th width="100px">Количество т, (шт.)</th>
+                        <th>Наименование организации</th>
+                        <th width="100px">Количество т, (шт.)</th>
+                        <th>Наименование организации</th>
+                        <th>Цель</th>
+                    </tr>
+                    </thead>
+                    <tbody ID="containerTable" th:with="condition=${#lists.isEmpty(pod9)}">
+                            <tr th:if="${condition}">
+                                <td th:colspan="13">Нет данных</td>
+                            </tr>
+                            <tr th:unless="${condition}" th:id = "'row_' + ${pod9Waste.getId()}" th:each="pod9Waste, state : ${pod9}">
+                                <td th:utext="${state.count}"></td>
+                                <td th:utext="${pod9Waste.getTransparentDate()}"></td>
+                                <td th:utext="${pod9Waste.getWasteGenerate()}"></td>
+                                <td th:utext="${pod9Waste.getCountFromOther()}"></td>
+                                <td th:utext="${pod9Waste.getNameOther()}"></td>
+                                <td th:utext="${pod9Waste.getCountFromPeople()}"></td>
+                                <td th:utext="${pod9Waste.getCountUsed()}"></td>
+                                <td th:utext="${pod9Waste.getCountNeutralized()}"></td>
+                                <td th:utext="${pod9Waste.getWasteWeight()}"></td>
+                                <td th:utext="${pod9Waste.getRecipientOrganizationName()}" th:class="left"></td>
+                                <td th:utext="${pod9Waste.getGoalName()}"></td>
+                                <td th:utext="${pod9Waste.getCountKeeping()}"></td>
+                                <td>
+                                    <div>
+                                        <i class="fa fa-edit fa-lg border" th:if="${pod9Waste.getWasteId()==null }" th:onclick="'updatePod('+${pod9Waste.getId()} +')'"></i>
+                                        <i class="fa fa-copy fa-lg border" th:if="${pod9Waste.getWasteId()==null }" th:onclick="'duplicate('+ ${pod9Waste.getId()} + ', \'pod9\')'"></i>
+                                        <i class="fa fa-trash-o fa-lg border" th:if="${pod9Waste?.getWasteId()==null}" th:onclick="'removePod('+ ${pod9Waste.getId()} + ', \'pod9\')'"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

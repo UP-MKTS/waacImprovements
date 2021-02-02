@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="pod9-own-waste-mod">
+    <div class="dm-overlay" id="saveModal">
+        <div class="dm-table">
+            <div class="dm-cell">
+                <div class="dm-modal modal-wide">
+                    <a href="#close" class="close" onclick="clearFields()"></a>
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalTitle">Добавление новой записи</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form name="data" id="editingForm">
+                            <input type="text" class="data-el" name="id" id='id' readonly hidden>
+                            <!--<input type="text" class="data-el" name="departmentId" id='departmentId' readonly hidden>-->
+                            <div class="pod9-department"><span class="text">Подразделение*: </span>
+                                <select class="data-el" name="departmentId" id="departmentId">
+                                    <option th:each="department : ${departments}"
+                                            th:value="${department.getId()}"
+                                            th:utext="${department.getShortName()}"></option>
+                                </select>
+                            </div>
+                            <table class="data-editing">
+                                <tr>
+                                    <td width="200px" class="right">Наименование отхода*: </td>
+                                    <td width="250px">
+                                        <select class="data-el" name="wasteTypeId" id="wasteTypeId">
+                                            <option th:each="wasteType : ${wasteTypes}"
+                                                    th:value="${wasteType.getId()}"
+                                                    th:utext="${wasteType.getName()}"></option>
+                                        </select>
+                                    </td>
+                                    <td width="260px"><div class="info-container" th:onmouseover="infoWT('wasteTypeId', 'wasteType', 'code')" flow="down" id="wasteType"><i class="fa fa-info-circle fa-lg gray"></i></div></td>
+
+                                    <td width="200px" class="right">Количество от другой организации т (шт.): </td>
+                                    <td width="250px"><input type="text" class="data-el" name="countFromOther" id="countFromOther"></td>
+                                    <td width="200px"><span class="red" id="countFromOtherErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Дата*: </td>
+                                    <td><input type="date" class="data-el" name="date" id="date"></td>
+                                    <td><span class="red" id="dateErr"></span></td>
+
+                                    <td class="right">Наименование другой организации: </td>
+                                    <td><input type="text" class="data-el" name="nameOther" id="nameOther"></td>
+                                    <td><span class="red" id="nameOtherErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Образовалось отхода* т, (шт.): </td>
+                                    <td><input type="text" class="data-el" name="wasteGenerate" id="wasteGenerate"></td>
+                                    <td><span class="red" id="wasteGenerateErr"></span></td>
+
+                                    <td class="right">Поступило от физ. лиц т, (шт.): </td>
+                                    <td><input type="text" class="data-el" name="countFromPeople" id="countFromPeople"></td>
+                                    <td><span class="red" id="countFromPeopleErr"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Использованно т, (шт.): </td>
+                                    <td><input type="text" class="data-el" name="countUsed" id="countUsed"></td>
+                                    <td><span class="red" id="countUsedErr"></span></td>
+
+                                    <td class="right">Обезврежено т, (шт.): </td>
+                                    <td><input type="text" class="data-el" name="countNeutralized" id="countNeutralized"></td>
+                                    <td><span class="red" id="countNeutralizedErr"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="button" value="Сохранить" id="saveButton" th:onclick="savePod()">
+                            <em> * - обязательные для заполнения поля</em>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

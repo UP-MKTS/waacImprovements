@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:insert="pattern :: header"></head>
+<body>
+    <link href="styles/catalog.css" rel="stylesheet">
+    <div th:insert="pattern :: menu"></div>
+
+    <div class="catalog-container">
+        <a href="waste-types"><input type="button" class="catalog-button btn-lightblue" value="Классификатор отходов"></a>
+        <a href="organizations"><input type="button" class="catalog-button btn-pink" value="Организации"></a>
+        <a href="contracts"><input type="button" class="catalog-button btn-purple" value="Договоры"></a>
+        <a href="activity-kinds"><input type="button" class="catalog-button btn-darkorange" value="Источники образования"></a>
+        <a href="dangerous-pow"><input type="button" class="catalog-button btn-lightgreen" value="Степени опасности"></a>
+        <a href="dangerous-class"><input type="button" class="catalog-button btn-red" value="Классы опасности"></a>
+        <a href="goals"><input type="button" class="catalog-button btn-green" sec:authorize="hasAnyAuthority('admin')" value="Действия с отходами"></a>
+        <a href="persons"><input type="button" class="catalog-button btn-teal" value="Ответственные лица"></a>
+        <a href="departments"><input type="button" class="catalog-button btn-orange" value="Подразделения"></a>
+        <a href="users"><input type="button" class="catalog-button btn-blue" sec:authorize="hasAnyAuthority('admin')" value="Пользователи"></a>
+    </div>
+</body>
+</html>

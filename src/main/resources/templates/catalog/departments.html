@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="pattern :: header"></head>
+    <body>
+        <div th:insert="pattern :: menu"></div>
+        <div class="wrapper">
+            <div class="content">
+                <link href="styles/data-table.css" rel="stylesheet">
+
+                <div class="upContainer">
+                    <div class="preTableContainer">
+                        <a href="#saveModal" class="btn"><button type="button" class="button"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                    </div>
+
+                    <div class="title">
+                        <h4>Список подразделений</h4>
+                    </div>
+                </div>
+
+                <div th:insert="modal-pages/department-mod :: depepartment-mod"></div>
+
+                <table class="data-view">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Полное название</th>
+                        <th>Сокращенное название</th>
+                        <th>ФИО начальника</th>
+                        <th>Должность начальника</th>
+                        <th class="actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="department, state : ${departments}">
+                        <td th:utext="${state.count}"></td>
+                        <td class="left" th:utext="${department.getFullName()}"></td>
+                        <td class="left" th:utext="${department.getShortName()}"></td>
+                        <td class="left" th:utext="${department.getChiefFio()}"></td>
+                        <td class="left" th:utext="${department.getChiefPosition()}"></td>
+                        <td>
+                            <div id="parent">
+                                <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateCatalogs('+ ${department.getId()} + ', \'department\')'"></i>&nbsp;
+                                <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${department.getId()} + ', \'department\')'"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

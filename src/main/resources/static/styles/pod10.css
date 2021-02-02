@@ -1,0 +1,39 @@
+.dep-container {
+    line-height: 55px;
+    width: 300px;
+    height: 55px;
+}
+
+.text-size-18 {
+    font-size: 18px;
+}
+
+.pod9-title-sel {
+    margin: 0;
+    padding: 3px;
+    height: 30px;
+}
+
+.vertical-td {
+    height: 120px;
+    width: 60px;
+}
+
+.vertical-td span {
+    writing-mode: tb-rl;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.pod10-title-sel {
+    margin: 0;
+    font-size: 16px;
+    font-family: "Roboto", serif;
+    padding: 3px;
+    height: 30px;
+}
