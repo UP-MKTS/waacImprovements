@@ -102,7 +102,7 @@ public class WasteTypeServiceImpl implements WasteTypeService {
 
 		}
 
-		String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+		String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
 		try {

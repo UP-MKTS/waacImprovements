@@ -8,10 +8,7 @@ import com.mkts.waac.models.AccompPasspDepartment;
 import com.mkts.waac.models.Department;
 import com.mkts.waac.models.Pod9OwnWaste;
 import com.mkts.waac.models.WasteType;
-import com.mkts.waac.services.DepartmentService;
-import com.mkts.waac.services.Pod9OwnWasteService;
-import com.mkts.waac.services.Pod9ReportService;
-import com.mkts.waac.services.Pod9Service;
+import com.mkts.waac.services.*;
 import com.mkts.waac.services.helpers.Pod9Helper;
 import com.mkts.waac.services.utils.CalcCountStoredService;
 import com.mkts.waac.services.utils.ErrorDataService;
@@ -29,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +67,9 @@ public class Pod9Api {
 
 	@Autowired
 	private Pod9Mapper pod9Mapper;
+
+	@Autowired
+	private AccompPasspWasteService accompPasspWasteService;
 
 	@Autowired
 	public Pod9Api(Pod9OwnWasteService pod9OwnWasteService, ErrorDataService errorDataService, CalcCountStoredService calcCountStoredService) {
@@ -190,7 +191,7 @@ public class Pod9Api {
 			}
 		}
 
-		Integer wasteId = wastes.get(0).getId();
+//		Integer wasteId = wastes.get(0).getId();
 
 		wastes = wastes.stream().distinct().collect(Collectors.toList());
 
@@ -377,11 +378,23 @@ public class Pod9Api {
 			}else{
 				pod9OwnWasteService.save(pod9SaveDto);
 			}
-			List<Integer> department = new ArrayList<>();
-			List<Integer> wasteTyep = new ArrayList<>();
-			department.add(pod9SaveDto.getDepartmentId());
-			wasteTyep.add(pod9SaveDto.getWasteTypeId());
-			calcCountStoredService.recalcCountStored(wasteTyep,department,pod9SaveDto.getDate());
+			List<Integer> wasteTypes = new ArrayList<>();
+			wasteTypes.add(pod9SaveDto.getWasteTypeId());
+			List<Integer> departments = new ArrayList<>();
+			departments.add(pod9SaveDto.getDepartmentId());
+			LocalDate date = LocalDate.now();
+			Integer year =  Integer.parseInt(pod9SaveDto.getDate().substring(6,pod9SaveDto.getDate().length()));
+			List<String> dates = new ArrayList<>();
+			if(date.getYear()>year)
+			{
+				for (int i = year;i<=date.getYear();i++){
+					dates.add(String.valueOf(i));
+				}
+				calcCountStoredService.recalcCountStoredAll(wasteTypes, departments, dates);
+			}else {
+				calcCountStoredService.recalcCountStored(wasteTypes, departments, pod9SaveDto.getDate());
+			}
+			//calcCountStoredService.recalcCountStored(wasteTypes,departments,pod9SaveDto.getDate());
 			return new ResponseEntity<>(null, HttpStatus.OK);
 		}
 	}

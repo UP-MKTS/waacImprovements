@@ -474,7 +474,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 
 		}
 
-		for (AccompPasspDepartment department: accompPassp.getAccompPasspDepartments()) {
+		for (AccompPasspWaste department: accompPassp.getAccompPasspWastes()) {
 			numberRow = createRow(sheet, numberRow, true, 2, 12);
 			sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 0, 2));
 			sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 3, 5));
@@ -534,7 +534,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 //			}
 //		}
 
-		String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+		String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
 		try {
@@ -760,7 +760,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 				}
 			}
 		}
-		String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+		String reportFile = "D:\\test.xls";
 
 		try {
 			FileOutputStream out = new FileOutputStream(new File(reportFile));

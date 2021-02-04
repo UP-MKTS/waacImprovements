@@ -80,7 +80,7 @@ public class DangerousClassServiceImpl implements DangerousClassService {
 			sheet.getRow(numberRow-1).getCell(0).setCellValue(dangerousClass.getName());
 		}
 
-		String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+		String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
 		try {

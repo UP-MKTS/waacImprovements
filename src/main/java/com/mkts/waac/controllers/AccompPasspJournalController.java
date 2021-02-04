@@ -38,7 +38,10 @@ public class AccompPasspJournalController {
     public String ShowAccPassp( Model model ) {
         List<String> years = accompPasspService.getYears();
         List<MonthDto> months = accompPasspService.getMonth();
-        List<AccompPasspJournalDto> helpJournalDtos = accompPasspService.getAllByYearAndMonth(years.get(0),months.get(0).getMonthNumber());
+        List<AccompPasspJournalDto> helpJournalDtos = null;
+        if(years.stream().count()!=0 && months.stream().count()!=0){
+            helpJournalDtos = accompPasspService.getAllByYearAndMonth(years.get(0),months.get(0).getMonthNumber());
+        }
 
         model.addAttribute("accompPassps", helpJournalDtos);
         model.addAttribute("years", years);

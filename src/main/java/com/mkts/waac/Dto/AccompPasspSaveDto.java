@@ -43,5 +43,6 @@ public class AccompPasspSaveDto {
     @Length(max = 100, message = "Введите менее 100 символов")
     private String driverFio;
 
+    @Size(min = 1, message = "Добавьте код отход в список")
     private List<AccompPasspWasteSaveDto> accompPasspWasteSaveDtos;
 }

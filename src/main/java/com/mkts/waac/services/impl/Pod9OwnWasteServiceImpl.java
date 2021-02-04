@@ -228,7 +228,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
             sheet.getRow(numberRow-1).getCell(2).setCellValue(waste.getAccompPassps().getDepartmentsShortName(","));
         }
 
-        String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+        String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
         try {
@@ -302,7 +302,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
         }
 
         wasteTypes = wasteTypes.stream().distinct().collect(Collectors.toList());
-        Integer temp = wasteTypes.get(0);
+//        Integer temp = wasteTypes.get(0);
         for (Integer waste:wasteTypes)
         {
             List<Pod9OwnWaste> pod9 = new ArrayList<>();
@@ -511,7 +511,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
 
 
 
-        String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+        String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
         try {

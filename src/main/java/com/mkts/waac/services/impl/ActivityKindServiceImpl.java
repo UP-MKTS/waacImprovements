@@ -76,7 +76,7 @@ public class ActivityKindServiceImpl implements ActivityKindService {
 			sheet.getRow(numberRow-1).getCell(0).setCellValue(activityKind.getName());
 		}
 
-		String reportFile = "D:\\Lagvinovich\\Проекты\\test.xls";
+		String reportFile = "D:\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
 		try {

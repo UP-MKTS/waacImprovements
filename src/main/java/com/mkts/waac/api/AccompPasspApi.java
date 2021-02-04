@@ -167,9 +167,9 @@ public class AccompPasspApi {
         LocalDate date = LocalDate.now();
         Integer year =  Integer.parseInt(oneAP.getTransportationDate().substring(6,oneAP.getTransportationDate().length()));
         List<String> dates = new ArrayList<>();
-        if(date.getYear()<year)
+        if(date.getYear()>year)
         {
-            for (int i = date.getYear();i<=year;i++){
+            for (int i = year;i<=date.getYear();i++){
                 dates.add(String.valueOf(i));
             }
             calcCountStoredService.recalcCountStoredAll(wasteTypes, departments, dates);
