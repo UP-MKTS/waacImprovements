@@ -148,105 +148,139 @@ public class AccompPasspServiceImpl implements AccompPasspService {
 		for (AccompPasspWasteSaveDto accompPasspWasteSaveDto:accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
 			allNew.add(accompPasspWasteSaveDto.getWasteId());
 		}
-		for (AccompPasspWasteDto accompPasspWasteDto:temp.getWasteTypeIdList()){
-			//all.add(accompPasspWasteDto.getWasteTypeId().getId());
-			wasteCurrentNow.add(accompPasspWasteDto.getWasteTypeId().getId());
+
+		for (AccompPasspWasteDto accompPasspWaste: temp.getWasteTypeIdList()){
+			wasteCurrentNow.add(accompPasspWaste.getWasteTypeId().getId());
 		}
 		allNew = allNew.stream().distinct().collect(Collectors.toList());
 		wasteCurrentNow = wasteCurrentNow.stream().distinct().collect(Collectors.toList());
-		List<Integer> all = wasteCurrentNow.stream().count()>allNew.stream().count()?wasteCurrentNow:allNew;
-		List<Integer> wasteCurrent = wasteCurrentNow.stream().count()>allNew.stream().count()?allNew:wasteCurrentNow;
 
-		for (Integer index : all)
-		{
-			if(!wasteCurrent.contains(index)){
-				List<AccompPasspWaste> allByAccompPassps_idAndWasteTypes_id = accompPasspWasteDao.findAllByAccompPassps_IdAndWasteTypes_Id(temp.getId(), index);
-				if(allByAccompPassps_idAndWasteTypes_id.stream().count()!=0) {
-					for (AccompPasspWaste accompPasspWaste : allByAccompPassps_idAndWasteTypes_id) {
-						pod9OwnWasteService.delete(accompPasspWaste.getId());
-						accompPasspWasteDao.delete(accompPasspWaste);
-					}
-				}else
-				{
-					for (AccompPasspWasteSaveDto accompPasspWasteSaveDto: accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
-						if(accompPasspWasteSaveDto.getWasteId() == index) {
-							AccompPasspWasteDto accompPasspWasteDto = new AccompPasspWasteDto();
-							accompPasspWasteDto.setBoxing(accompPasspWasteSaveDto.getBoxing());
-							accompPasspWasteDto.setAddress(accompPasspWasteSaveDto.getAddress());
-							accompPasspWasteDto.setWasteTypeId(wasteTypeMapper.convertToDto(wasteTypeDao.getOne(accompPasspWasteSaveDto.getWasteId())));
-							accompPasspWasteDto.setDepartment(departmentMapper.convertToDto(departmentDao.getOne(accompPasspWasteSaveDto.getDepartmentId())));
-							AccompPasspWaste newWaste = accompPasspWasteMapper.convertToEntity(accompPasspWasteDto);
-							newWaste.setAccompPassps(ap);
-							AccompPasspWaste save = accompPasspWasteDao.save(newWaste);
-							Pod9OwnWaste pod9OwnWaste = new Pod9OwnWaste();
-							pod9OwnWaste.setAccompPasspWaste(save);
-							pod9OwnWasteService.save(pod9OwnWaste);
-						}
+		for(Integer wasteId: allNew){
+			if(wasteCurrentNow.contains(wasteId)){
+				List<Integer> currentDeps = new ArrayList<>();
+				List<Integer> newDeps = new ArrayList<>();
+
+				for (AccompPasspWasteSaveDto accompPasspWasteSaveDto:accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
+					if(accompPasspWasteSaveDto.getWasteId()==wasteId){
+						newDeps.add(accompPasspWasteSaveDto.getDepartmentId());
 					}
 				}
-			}
-			else{
-				List<AccompPasspWasteDto> allByAccompPassps_idAndWasteTypes_id = accompPasspWasteMapper.convertToDtoList(accompPasspWasteDao.findAllByAccompPassps_IdAndWasteTypes_Id(temp.getId(), index));
-				List<Integer> departmentsNew = new ArrayList<>();
-				List<Integer> currentDepartmentsNow = new ArrayList<>();
-				for (AccompPasspWasteSaveDto save: accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
-					if(save.getWasteId()==index){
-						departmentsNew.add(save.getDepartmentId());
+				for (AccompPasspWasteDto accompPasspWasteDto:temp.getWasteTypeIdList()){
+					if(accompPasspWasteDto.getWasteTypeId().getId()==wasteId){
+						currentDeps.add(accompPasspWasteDto.getDepartment().getId());
 					}
 				}
-				for (AccompPasspWasteDto accompPasspWasteDto: allByAccompPassps_idAndWasteTypes_id){
-					currentDepartmentsNow.add(accompPasspWasteDto.getDepartment().getId());
-//					departments.add(accompPasspWasteDto.getDepartment().getId());
-				}
-				List<Integer> departments = currentDepartmentsNow.stream().count() > departmentsNew.stream().count()?currentDepartmentsNow:departmentsNew;
 
-				List<Integer> currentDepartments = currentDepartmentsNow.stream().count() > departmentsNew.stream().count()?departmentsNew:currentDepartmentsNow;
-
-				for (Integer department:departments){
-					if(!currentDepartments.contains(department)){
-						AccompPasspWaste ByAccompPassps_idAndWasteTypes_idAndDepartment_id = accompPasspWasteDao.findByAccompPassps_IdAndWasteTypes_IdAndDepartment_Id(temp.getId(), index, department);
-						if(ByAccompPassps_idAndWasteTypes_idAndDepartment_id!=null)
-						{
-								pod9OwnWasteService.delete(ByAccompPassps_idAndWasteTypes_idAndDepartment_id.getId());
-								accompPasspWasteDao.delete(ByAccompPassps_idAndWasteTypes_idAndDepartment_id);
-						}
-						else
-						{
-							for (AccompPasspWasteSaveDto accompPasspWasteSaveDto: accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
-								if(accompPasspWasteSaveDto.getWasteId() == index && accompPasspWasteSaveDto.getDepartmentId() == department) {
-									AccompPasspWasteDto accompPasspWasteDto = new AccompPasspWasteDto();
-									accompPasspWasteDto.setBoxing(accompPasspWasteSaveDto.getBoxing());
-									accompPasspWasteDto.setAddress(accompPasspWasteSaveDto.getAddress());
-									accompPasspWasteDto.setWasteTypeId(wasteTypeMapper.convertToDto(wasteTypeDao.getOne(accompPasspWasteSaveDto.getWasteId())));
-									accompPasspWasteDto.setDepartment(departmentMapper.convertToDto(departmentDao.getOne(accompPasspWasteSaveDto.getDepartmentId())));
-									AccompPasspWaste newWaste = accompPasspWasteMapper.convertToEntity(accompPasspWasteDto);
-									newWaste.setAccompPassps(ap);
-									AccompPasspWaste save = accompPasspWasteDao.save(newWaste);
-									Pod9OwnWaste pod9OwnWaste = new Pod9OwnWaste();
-									pod9OwnWaste.setAccompPasspWaste(save);
-									pod9OwnWasteService.save(pod9OwnWaste);
-								}
-							}
-						}
+				for(Integer newDep: newDeps){
+					if(currentDeps.contains(newDep)){
+						AccompPasspWaste accompPasspWaste = accompPasspWasteDao.findByAccompPassps_IdAndWasteTypes_IdAndDepartment_Id(temp.getId(), wasteId, newDep);
+						AccompPasspWasteSaveDto saveDep = getByWasteDep(accompPasspSaveDto.getAccompPasspWasteSaveDtos(),wasteId,newDep);
+						accompPasspWaste.setBoxing(saveDep.getBoxing());
+						accompPasspWaste.setAddress(saveDep.getAddress());
+						accompPasspWaste.setDepartment(departmentDao.findById(saveDep.getDepartmentId()).get());
+						accompPasspWaste.setWasteTypes(wasteTypeDao.findById(saveDep.getWasteId()).get());
+						accompPasspWasteDao.save(accompPasspWaste);
 					}
 					else
 					{
-						AccompPasspWasteDto ByAccompPassps_idAndWasteTypes_idAndDepartment_id = accompPasspWasteMapper.convertToDto(accompPasspWasteDao.findByAccompPassps_IdAndWasteTypes_IdAndDepartment_Id(temp.getId(), index, department));
-						for (AccompPasspWasteSaveDto accompPasspWasteSaveDto: accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
-							if(accompPasspWasteSaveDto.getWasteId() == index && accompPasspWasteSaveDto.getDepartmentId() == department) {
-								ByAccompPassps_idAndWasteTypes_idAndDepartment_id.setBoxing(accompPasspWasteSaveDto.getBoxing());
-								ByAccompPassps_idAndWasteTypes_idAndDepartment_id.setAddress(accompPasspWasteSaveDto.getAddress());
-								ByAccompPassps_idAndWasteTypes_idAndDepartment_id.setWasteTypeId(wasteTypeMapper.convertToDto(wasteTypeDao.getOne(accompPasspWasteSaveDto.getWasteId())));
-								ByAccompPassps_idAndWasteTypes_idAndDepartment_id.setDepartment(departmentMapper.convertToDto(departmentDao.getOne(accompPasspWasteSaveDto.getDepartmentId())));
-								AccompPasspWaste newWaste = accompPasspWasteMapper.convertToEntity(ByAccompPassps_idAndWasteTypes_idAndDepartment_id);
-								newWaste.setAccompPassps(ap);
-								AccompPasspWaste save = accompPasspWasteDao.save(newWaste);
-							}
-						}
+						AccompPasspWaste accompPasspWaste = new AccompPasspWaste();
+						AccompPasspWasteSaveDto saveDep = getByWasteDep(accompPasspSaveDto.getAccompPasspWasteSaveDtos(),wasteId,newDep);
+						accompPasspWaste.setBoxing(saveDep.getBoxing());
+						accompPasspWaste.setAddress(saveDep.getAddress());
+						accompPasspWaste.setDepartment(departmentDao.findById(saveDep.getDepartmentId()).get());
+						accompPasspWaste.setWasteTypes(wasteTypeDao.findById(saveDep.getWasteId()).get());
+						accompPasspWaste.setAccompPassps(accompPasspMapper.convertToEntity(temp));
+						AccompPasspWaste newAp = accompPasspWasteDao.save(accompPasspWaste);
+						Pod9OwnWaste pod9OwnWaste = new Pod9OwnWaste();
+						pod9OwnWaste.setAccompPasspWaste(newAp);
+						pod9OwnWaste.setTransparentDate(newAp.getAccompPassps().getTransportationDate());
+						pod9OwnWasteService.save(pod9OwnWaste);
 					}
+				}
+
+
+			}
+			else{
+				List<AccompPasspWasteSaveDto> wasteSaveDtos = getByWasteId(accompPasspSaveDto.getAccompPasspWasteSaveDtos(),wasteId);
+				for (AccompPasspWasteSaveDto wasteSaveDto: wasteSaveDtos){
+					AccompPasspWaste accompPasspWaste = new AccompPasspWaste();
+					accompPasspWaste.setBoxing(wasteSaveDto.getBoxing());
+					accompPasspWaste.setAddress(wasteSaveDto.getAddress());
+					accompPasspWaste.setDepartment(departmentDao.findById(wasteSaveDto.getDepartmentId()).get());
+					accompPasspWaste.setWasteTypes(wasteTypeDao.findById(wasteSaveDto.getWasteId()).get());
+					accompPasspWaste.setAccompPassps(accompPasspMapper.convertToEntity(temp));
+					AccompPasspWaste newAp = accompPasspWasteDao.save(accompPasspWaste);
+					Pod9OwnWaste pod9OwnWaste = new Pod9OwnWaste();
+					pod9OwnWaste.setAccompPasspWaste(newAp);
+					pod9OwnWaste.setTransparentDate(newAp.getAccompPassps().getTransportationDate());
+					pod9OwnWasteService.save(pod9OwnWaste);
 				}
 			}
 		}
+		temp = accompPasspMapper.convertToDto(accompPasspDao.findById(accompPasspSaveDto.getId()).get());
+		for (AccompPasspWasteDto accompPasspWaste: temp.getWasteTypeIdList()){
+			wasteCurrentNow.add(accompPasspWaste.getWasteTypeId().getId());
+		}
+
+		wasteCurrentNow = wasteCurrentNow.stream().distinct().collect(Collectors.toList());
+		for (Integer wasteId: wasteCurrentNow){
+			if(allNew.contains(wasteId)){
+				List<Integer> currentDeps = new ArrayList<>();
+				List<Integer> newDeps = new ArrayList<>();
+				for (AccompPasspWasteSaveDto accompPasspWasteSaveDto:accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
+					if(accompPasspWasteSaveDto.getWasteId()==wasteId){
+						newDeps.add(accompPasspWasteSaveDto.getDepartmentId());
+					}
+				}
+				for (AccompPasspWasteDto accompPasspWasteDto:temp.getWasteTypeIdList()){
+					if(accompPasspWasteDto.getWasteTypeId().getId()==wasteId){
+						currentDeps.add(accompPasspWasteDto.getDepartment().getId());
+					}
+				}
+
+				for (Integer currentDep:currentDeps){
+					if(!newDeps.contains(currentDep)){
+						AccompPasspWaste currendAPWaste = accompPasspWasteDao.findByAccompPassps_IdAndWasteTypes_IdAndDepartment_Id(temp.getId(), wasteId, currentDep);
+						pod9OwnWasteService.deleteByAccopmPasspWasteId(currendAPWaste.getId());
+						accompPasspWasteDao.delete(currendAPWaste);
+					}
+				}
+			}
+			else
+			{
+				List<Integer> currentDeps = new ArrayList<>();
+				for (AccompPasspWasteDto accompPasspWasteDto:temp.getWasteTypeIdList()){
+					if(accompPasspWasteDto.getWasteTypeId().getId()==wasteId){
+						currentDeps.add(accompPasspWasteDto.getDepartment().getId());
+					}
+				}
+				for (Integer currentDep:currentDeps){
+					AccompPasspWaste currendAPWaste = accompPasspWasteDao.findByAccompPassps_IdAndWasteTypes_IdAndDepartment_Id(temp.getId(), wasteId, currentDep);
+					pod9OwnWasteService.deleteByAccopmPasspWasteId(currendAPWaste.getId());
+					accompPasspWasteDao.delete(currendAPWaste);
+				}
+			}
+		}
+	}
+
+	private List<AccompPasspWasteSaveDto> getByWasteId(List<AccompPasspWasteSaveDto> dtos, Integer wasteId){
+		List<AccompPasspWasteSaveDto> result = new ArrayList<>();
+		for (AccompPasspWasteSaveDto temp:dtos){
+			if(temp.getWasteId()==wasteId){
+				result.add(temp);
+			}
+		}
+		return result;
+	}
+
+	private AccompPasspWasteSaveDto getByWasteDep(List<AccompPasspWasteSaveDto> saveDtos,Integer wasteId,Integer depId){
+
+		for (AccompPasspWasteSaveDto temp: saveDtos){
+			if(temp.getWasteId() == wasteId && temp.getDepartmentId()==depId){
+				return temp;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -283,6 +317,7 @@ public class AccompPasspServiceImpl implements AccompPasspService {
 			AccompPasspWaste newWaste = accompPasspWasteMapper.convertToEntity(accompPasspWasteDto);
 			newWaste.setAccompPassps(ap);
 			pod9OwnWaste.setAccompPasspWaste(accompPasspWasteService.save(newWaste));
+			pod9OwnWaste.setTransparentDate(newWaste.getAccompPassps().getTransportationDate());
 			pod9OwnWasteService.save(pod9OwnWaste);
 		}
 

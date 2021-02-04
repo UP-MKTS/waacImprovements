@@ -15,13 +15,13 @@ function fillWeightTable(tbody) {
 
             for (let accompPassp of result) {
                 for (let accompPasspWaste of accompPassp["wasteTypeIdList"]) {
-                    if(accompPasspWaste["wasteWeight"]!=0.0)
+                    if(accompPasspWaste["wasteWeight"]!=null)
                     {
                         continue;
                     }
                     let row  = tbody.insertRow(-1);
                     let cells =[];
-                    for (let i=0 ; i<=10;i++)
+                    for (let i=0 ; i<=8;i++)
                     {
                         cells.push(row.insertCell(i));
 
@@ -29,12 +29,20 @@ function fillWeightTable(tbody) {
                     cells[0].innerText=row.rowIndex;
                     cells[1].innerText=accompPassp["number"];
                     cells[2].innerText=accompPassp["accompPasspDate"];
-                    cells[3].innerText=accompPasspWaste["wasteTypeId"]["code"];
-                    cells[4].innerText=accompPassp["recipientOrganizationName"];
-                    let select = fillGoalSelect(accompPasspWaste["id"], accompPasspWaste["goal"]["id"]);
+                    cells[3].innerText=accompPasspWaste["department"]["shortName"];
+                    cells[4].innerText=accompPasspWaste["wasteTypeId"]["code"];
+                    cells[5].innerText=accompPassp["recipientOrganizationName"];
+                    let select;
+                    if(accompPasspWaste["goal"]!=null) {
+                        select = fillGoalSelect(accompPasspWaste["id"], accompPasspWaste["goal"]["id"]);
+                    }
+                    else
+                    {
+                        select = fillGoalSelect(accompPasspWaste["id"], -1);
+                    }
                     select.classList.add('weight-select');
-                    cells[5].appendChild(select);
-                    cells[6].innerHTML = '<input type="number"  class="inpNumber" id="inp' + accompPasspWaste["id"] + '" onchange="saveRow(' + accompPasspWaste["id"] +')"/>';
+                    cells[6].appendChild(select);
+                    cells[7].innerHTML = '<input type="number"  class="inpNumber" id="inp' + accompPasspWaste["id"] + '" onchange="saveRow(' + accompPasspWaste["id"] +')"/>';
                 }
 
             }

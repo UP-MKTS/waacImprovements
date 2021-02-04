@@ -60,6 +60,15 @@ public class Pod9OwnWaste implements Comparable<Pod9OwnWaste>{
     @JoinColumn(name = "waste_type_id")
     private WasteType wasteType;
 
+
+    public Double getCountFromOtherPod9() {
+        return countFromOther!=null?countFromOther:0d;
+    }
+
+    public Double getWasteGeneratePod9() {
+        return wasteGenerate!=null?wasteGenerate:0d;
+    }
+
     public int compareTo(Pod9OwnWaste pod9) {
 
 

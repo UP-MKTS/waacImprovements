@@ -18,7 +18,7 @@ public interface Pod9OwnWasteDao extends JpaRepository<Pod9OwnWaste, Integer> {
 
     Pod9OwnWaste findByAccompPasspWaste_Id(Integer id);
 
-    @Query("select a from Pod9OwnWaste a left join AccompPasspWaste b on a.accompPasspWaste.id = b.id where (b.wasteWeight<>0.0 or a.wasteGenerate<>0.0) and (a.wasteType.id =?1 or b.wasteTypes.id =?1) and substring(a.transparentDate,1,4)=?2 order by a.transparentDate asc ")
+    @Query("select a from Pod9OwnWaste a left join AccompPasspWaste b on a.accompPasspWaste.id = b.id where (b.wasteWeight is not null  or a.wasteGenerate is not null) and (a.wasteType.id =?1 or b.wasteTypes.id =?1) and substring(a.transparentDate,1,4)=?2 order by a.transparentDate asc ")
     List<Pod9OwnWaste> getPod9ByWasteIdAndYear(Integer wasteTypeId, String year);
 
     @Query("select a from Pod9OwnWaste a left join AccompPasspWaste b on a.accompPasspWaste.id = b.id where (a.wasteType.id =?2 or b.wasteTypes.id =?2) and substring(a.transparentDate,1,4)=?1 order by a.transparentDate desc ")

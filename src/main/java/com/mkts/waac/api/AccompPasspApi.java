@@ -22,9 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/accomp-passp",
@@ -115,12 +117,30 @@ public class AccompPasspApi {
             return new ResponseEntity<>(errorMap, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         } else {
 
+            List<Integer> wastes = new ArrayList<>();
+            List<Integer> departments = new ArrayList<>();
+            for (AccompPasspWasteSaveDto accompPassp: accompPasspSaveDto.getAccompPasspWasteSaveDtos()){
+                wastes.add(accompPassp.getWasteId());
+                departments.add(accompPassp.getDepartmentId());
+            }
+            departments = departments.stream().distinct().collect(Collectors.toList());
+            wastes = wastes.stream().distinct().collect(Collectors.toList());
             if(accompPasspSaveDto.getId()==null) {
                 accompPasspService.newAccopmPassp(accompPasspSaveDto);
-//                calcCountStoredService.recalcCountStored(accompPasspSaveDto.getWasteTypeIdList(),accompPasspSaveDto.getDepartmentList(), accompPasspSaveDto.getTransportationDate());
             }else {
                 accompPasspService.saveUpdete(accompPasspSaveDto);
-//                calcCountStoredService.recalcCountStored(accompPasspSaveDto.getWasteTypeIdList(),accompPasspSaveDto.getDepartmentList(), accompPasspSaveDto.getTransportationDate());
+            }
+            LocalDate date = LocalDate.now();
+            Integer year =  Integer.parseInt(accompPasspSaveDto.getTransportationDate().substring(6,accompPasspSaveDto.getTransportationDate().length()));
+            List<String> dates = new ArrayList<>();
+            if(date.getYear()<year)
+            {
+                for (int i = date.getYear();i<=year;i++){
+                    dates.add(String.valueOf(i));
+                }
+                calcCountStoredService.recalcCountStoredAll(wastes, departments, dates);
+            }else {
+                calcCountStoredService.recalcCountStored(wastes, departments, accompPasspSaveDto.getTransportationDate());
             }
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
@@ -137,20 +157,25 @@ public class AccompPasspApi {
             consumes = MediaType.ALL_VALUE)
     public ResponseEntity<String> addAccompPasspWeights(@PathVariable Integer accompPasspWasteId, @PathVariable Integer goalId, @PathVariable Double weight) {
         accompPasspService.saveWeightAndGoal(accompPasspWasteId,goalId,weight);
-        Pod9OwnWaste  pod9OwnWaste = pod9OwnWasteService.getBuAccompPasspWasteId(accompPasspWasteId);
-        List<Integer> departments = new ArrayList<>();
+        AccompPasspWaste oneModel = accompPasspWasteService.getOne(accompPasspWasteId);
+        AccompPasspDto oneAP = accompPasspService.getOne(oneModel.getAccompPassps().getId());
+        AccompPasspWasteDto one = accompPasspWasteService.getOneDto(accompPasspWasteId);
         List<Integer> wasteTypes = new ArrayList<>();
-        AccompPasspWaste accompPasspWaste = accompPasspWasteService.getOne(accompPasspWasteId);
-        for (AccompPasspDepartment department:accompPasspWaste.getAccompPassps().getAccompPasspDepartments())
+        wasteTypes.add(one.getWasteTypeId().getId());
+        List<Integer> departments = new ArrayList<>();
+        departments.add(one.getDepartment().getId());
+        LocalDate date = LocalDate.now();
+        Integer year =  Integer.parseInt(oneAP.getTransportationDate().substring(6,oneAP.getTransportationDate().length()));
+        List<String> dates = new ArrayList<>();
+        if(date.getYear()<year)
         {
-            departments.add(department.getDepartment().getId());
+            for (int i = date.getYear();i<=year;i++){
+                dates.add(String.valueOf(i));
+            }
+            calcCountStoredService.recalcCountStoredAll(wasteTypes, departments, dates);
+        }else {
+            calcCountStoredService.recalcCountStored(wasteTypes, departments, oneAP.getTransportationDate());
         }
-        wasteTypes.add(accompPasspWaste.getWasteTypes().getId());
-        if(pod9OwnWaste.getDepartment()!=null) {
-            departments.add(pod9OwnWaste.getDepartment().getId());
-        }
-        Pod9OwnWasteDto pod9OwnWasteDto = pod9OwnWasteMapper.convertToDto(pod9OwnWaste);
-//        calcCountStoredService.recalcCountStored(wasteTypes,departments,pod9OwnWasteDto.getTransparentDate());
         return new ResponseEntity<>("Success", HttpStatus.ACCEPTED);
     }
 

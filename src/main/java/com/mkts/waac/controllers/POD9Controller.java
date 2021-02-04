@@ -101,12 +101,12 @@ public class POD9Controller {
                 Pod9OwnWaste pod = (Pod9OwnWaste) o;
 
                 if(pod.getAccompPasspWaste()!=null) {
-                    List<AccompPasspDepartment> departments = pod.getAccompPasspWaste().getAccompPassps().getAccompPasspDepartments();
-
-                    for (AccompPasspDepartment department : departments) {
-                        if (department.getDepartment().getId() == finalDepartmentId) {
-                            return true;
-                        }
+                    if(pod.getAccompPasspWaste().getDepartment().getId() == finalDepartmentId){
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }else
                 {

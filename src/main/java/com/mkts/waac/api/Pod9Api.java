@@ -151,22 +151,24 @@ public class Pod9Api {
 		month = month.length() < 2 ? "0" + month : month;
 		List<Pod9OwnWaste> pod9Dto = pod9OwnWasteService.getAllByDate(month,year);
 
+		Integer finalDepartmentId = departmentFind.getId();
+
 		Predicate pod9Department = new Predicate() {
 			@Override
 			public boolean evaluate(Object o) {
 				Pod9OwnWaste pod = (Pod9OwnWaste) o;
 
 				if(pod.getAccompPasspWaste()!=null) {
-					List<AccompPasspDepartment> departments = pod.getAccompPasspWaste().getAccompPassps().getAccompPasspDepartments();
-
-					for (AccompPasspDepartment department : departments) {
-						if (department.getDepartment().getId() == departmentFind.getId()) {
-							return true;
-						}
+					if(pod.getAccompPasspWaste().getDepartment().getId() == finalDepartmentId){
+						return true;
+					}
+					else
+					{
+						return false;
 					}
 				}else
 				{
-					if(pod.getDepartment().getId() == departmentFind.getId()){
+					if (pod.getDepartment().getId() == finalDepartmentId) {
 						return true;
 					}
 				}

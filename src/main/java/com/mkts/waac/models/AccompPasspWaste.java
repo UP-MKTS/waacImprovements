@@ -48,4 +48,7 @@ public class AccompPasspWaste {
     @Column(name = "accomp_passp_waste_address")
     private String address;
 
+    public Double getWasteWeightPod9() {
+        return wasteWeight!=null?wasteWeight:0d;
+    }
 }
