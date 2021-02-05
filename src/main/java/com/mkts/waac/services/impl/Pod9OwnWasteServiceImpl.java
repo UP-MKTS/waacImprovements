@@ -208,7 +208,9 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
         Date now = new Date();
         LocalDate date = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for (AccompPasspWaste accompPasspWaste: all){
-            if(accompPasspWaste.getWasteWeight()==0.0 && (accompPasspWaste.getAccompPassps().getTransportationDate().getDayOfMonth()<date.getDayOfMonth() || accompPasspWaste.getAccompPassps().getTransportationDate().getMonthValue()<date.getMonthValue()))
+            if(accompPasspWaste.getWasteWeight()==0.0 &&
+                    (accompPasspWaste.getAccompPassps().getTransportationDate().getDayOfMonth()<date.getDayOfMonth() ||
+                            accompPasspWaste.getAccompPassps().getTransportationDate().getMonthValue()<date.getMonthValue()))
             {
                 nullAll.add(accompPasspWaste);
             }
@@ -228,7 +230,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
             sheet.getRow(numberRow-1).getCell(2).setCellValue(waste.getAccompPassps().getDepartmentsShortName(","));
         }
 
-        String reportFile = "D:\\test.xls";
+        String reportFile = "D:\\reports\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
         try {
@@ -270,17 +272,16 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
                 Pod9OwnWaste pod = (Pod9OwnWaste) o;
 
                 if(pod.getAccompPasspWaste()!=null) {
-                    List<AccompPasspDepartment> departments = pod.getAccompPasspWaste().getAccompPassps().getAccompPasspDepartments();
-
-                    for (AccompPasspDepartment department : departments) {
-                        if (department.getDepartment().getId() == departmentId) {
-                            return true;
-                        }
+                    if(pod.getAccompPasspWaste().getDepartment().getId() == departmentId){
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }else
                 {
-                    if(pod.getDepartment().getId()==departmentId)
-                    {
+                    if (pod.getDepartment().getId() == departmentId) {
                         return true;
                     }
                 }
@@ -459,7 +460,10 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
                 row.getCell(6).setCellValue(setVal(pod9OwnWaste.getCountNeutralized()));
                 row.getCell(7).setCellValue(pod9OwnWaste.getAccompPasspWaste()!=null?setVal(pod9OwnWaste.getAccompPasspWaste().getWasteWeight()):"-");
                 row.getCell(8).setCellValue(pod9OwnWaste.getAccompPasspWaste()!=null?setVal(pod9OwnWaste.getAccompPasspWaste().getAccompPassps().getContract().getOrganization().getName()):"-");
-                row.getCell(9).setCellValue(pod9OwnWaste.getAccompPasspWaste()!=null?setVal(pod9OwnWaste.getAccompPasspWaste().getGoal().getName()):"-");
+                row.getCell(9).setCellValue(
+                        pod9OwnWaste.getAccompPasspWaste()!=null?
+                                pod9OwnWaste.getAccompPasspWaste().getGoal()!=null?
+                                        setVal(pod9OwnWaste.getAccompPasspWaste().getGoal().getName()):"-":"-");
                 row.getCell(10).setCellValue(setVal(pod9OwnWaste.getCountKeeping()));
 
                 for (int j = 0; j<sheet.getRow(numberRow-1).getLastCellNum();j++){
@@ -511,7 +515,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
 
 
 
-        String reportFile = "D:\\test.xls";
+        String reportFile = "D:\\reports\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
         try {

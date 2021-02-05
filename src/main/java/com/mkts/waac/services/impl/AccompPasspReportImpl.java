@@ -534,7 +534,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 //			}
 //		}
 
-		String reportFile = "D:\\test.xls";
+		String reportFile = "D:\\reports\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
 		try {
@@ -760,7 +760,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 				}
 			}
 		}
-		String reportFile = "D:\\test.xls";
+		String reportFile = "D:\\reports\\test.xls";
 
 		try {
 			FileOutputStream out = new FileOutputStream(new File(reportFile));
