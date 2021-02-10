@@ -1,3 +1,8 @@
+ a.active li {
+    background: #46b646;
+     color: #fff;
+}
+
 .info-img {
     height: 500px;
 }

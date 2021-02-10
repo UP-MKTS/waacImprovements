@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", function (event){
+    $(function (){
+            $('.menu [href]').each(function (){
+                if (this.href == window.location.href){
+                    $(this).addClass('active')
+                }
+            })})
+        }
+    )
+
+
+
 function removeTbody() {
     let table = document.getElementById('data-view');
     table.getElementsByTagName('tbody')[0].remove();

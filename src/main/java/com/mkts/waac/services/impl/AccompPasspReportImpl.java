@@ -680,19 +680,27 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 
 				for (AccompPasspJournalDto accompPasspJournalDto : accompPasspJournalDtos) {
 					for (AccompPasspWasteDto dto : accompPasspJournalDto.getAccompPasspWasteDtoList()) {
-						numberRow = createRow(sheet, numberRow, true, 2, 11);
-						sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 0, 0));
-						cell = sheet.getRow(numberRow - 2).getCell(0);
-						cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber());
+						int collRows = accompPasspJournalDto.getAccompPasspWasteDtoList().size();
 
-						cell = sheet.getRow(numberRow - 2).getCell(1);
-						cell.setCellValue(accompPasspJournalDto.getTransportationDate());
+						if (accompPasspJournalDto.getAccompPasspWasteDtoList().indexOf(dto)  == collRows - 1){ // проверка на последний элемент внутреннего списка
 
-						cell = sheet.getRow(numberRow - 2).getCell(2);
-						cell.setCellValue(accompPasspJournalDto.getDepartmentsShortName());
+						}
+						numberRow = createRow(sheet, numberRow, true, 2 * collRows, 11);
+						sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, numberRow - 1, 0, 0));
 
-						cell = sheet.getRow(numberRow - 1).getCell(2);
-						cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " +  accompPasspJournalDto.getContractDate());
+
+
+							cell = sheet.getRow(numberRow - 2).getCell(0);
+							cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber()); // объеденить по id столбец
+
+							cell = sheet.getRow(numberRow - 2).getCell(1);
+							cell.setCellValue(accompPasspJournalDto.getTransportationDate()); // объеденить по id столбец
+
+							cell = sheet.getRow(numberRow - 2).getCell(2);        // объеденить по id столбец
+							cell.setCellValue(accompPasspJournalDto.getDepartmentsShortName());
+
+							cell = sheet.getRow(numberRow - 1).getCell(2);        // объеденить по id столбец
+							cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " + accompPasspJournalDto.getContractDate());
 
 						cell = sheet.getRow(numberRow - 2).getCell(3);
 						cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
@@ -702,6 +710,8 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 
 						cell = sheet.getRow(numberRow - 2).getCell(5);
 						cell.setCellValue(dto.getWasteTypeId().getDangerousClassName());
+
+
 
 						if (dto.getWasteWeight() != null && dto.getGoal() != null) {
 							switch (dto.getGoal().getName()) {

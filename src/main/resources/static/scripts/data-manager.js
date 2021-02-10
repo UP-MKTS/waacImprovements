@@ -9,7 +9,7 @@ async function save(catalogName) {
     let object = {};
     let formData = new FormData(document.forms.data);
     let objectWast = {
-        wasteId: 0 ,
+        wasteId: 0,
         departmentId: 0,
         boxing: "",
         address: "",
@@ -18,8 +18,7 @@ async function save(catalogName) {
     object["accompPasspWasteSaveDtos"] = [];
     let flag = 0
     formData.forEach(function (value, key) {
-        if(key.includes("departmentInfo"))
-        {
+        if (key.includes("departmentInfo")) {
             let dep = "department-";
             let wast = "tableWasteId-";
             let wasteId = key.slice(key.indexOf(wast) + wast.length, key.indexOf("]")).toString();
@@ -32,25 +31,22 @@ async function save(catalogName) {
             } else {
                 objectWast["address"] = value;
             }
-            flag +=1;
-            if(flag === 2)
-            {
+            flag += 1;
+            if (flag === 2) {
                 flag = 0;
                 object["accompPasspWasteSaveDtos"].push(objectWast);
                 objectWast = {
-                    wasteId: 0 ,
+                    wasteId: 0,
                     departmentId: 0,
                     boxing: "",
                     address: ""
                 }
             }
-        }else
-        {
-            if(catalogName==="accomp-passp") {
+        } else {
+            if (catalogName === "accomp-passp") {
                 if (key != "departmentId" && key != "wasteTypeId")
                     object[key] = convertFormData(key, value);
-            }else
-            {
+            } else {
                 object[key] = convertFormData(key, value);
             }
         }
@@ -80,10 +76,10 @@ async function save(catalogName) {
     }
 }
 
-function test()
-{
-    fetch('api/accomp-passp/'+1+"/2021",{
-        method: 'GET',})
+function test() {
+    fetch('api/accomp-passp/' + 1 + "/2021", {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             let allDataElement = 0;
@@ -118,14 +114,14 @@ function getWasteTypeList() {
 }
 
 
-function downloadFile(id,catatogName) {
-    if(catatogName === "pod9")
-    {
+function downloadFile(id, catatogName) {
+    if (catatogName === "pod9") {
         let id = $("#department").val();
     }
     try {
-        fetch('api/'+catatogName+'/download/'+id,{
-            method:'GET'})
+        fetch('api/' + catatogName + '/download/' + id, {
+            method: 'GET'
+        })
             .then(response => response.blob())
             .then(blob => {
                 var url = window.URL.createObjectURL(blob);
@@ -136,26 +132,26 @@ function downloadFile(id,catatogName) {
                 a.click();
                 a.remove();
             });
-    }
-    catch (e) {
+    } catch (e) {
         logMyErrors(e);
     }
 }
 
-function downloadJournal(catatogName,year){
+function downloadJournal(catatogName, year) {
 
-        fetch('api/'+catatogName+'/download/'+year,{
-            method:'GET'})
-            .then(response => response.blob())
-            .then(blob => {
-                var url = window.URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = "filename.xlsx";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            });
+    fetch('api/' + catatogName + '/download/' + year, {
+        method: 'GET'
+    })
+        .then(response => response.blob())
+        .then(blob => {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = "filename.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        });
 
 
 }
@@ -163,14 +159,17 @@ function downloadJournal(catatogName,year){
 function remove(id, catatogName) {
     let answer = confirm('Вы уверенны что хотите удалить данную запись??');
     if (answer) {
-        fetch('api/' + catatogName + '/' + id,{
-            method: 'DELETE',})
+        fetch('api/' + catatogName + '/' + id, {
+            method: 'DELETE',
+        })
             .then(() => location.reload())
     }
 }
-function downloadCatalog(catalogName){
-    fetch('api/'+catalogName+'/download',{
-        method:'GET'})
+
+function downloadCatalog(catalogName) {
+    fetch('api/' + catalogName + '/download', {
+        method: 'GET'
+    })
         .then(response => response.blob())
         .then(blob => {
             var url = window.URL.createObjectURL(blob);
@@ -187,8 +186,9 @@ function showUpdate(id, catatogName) {
     document.location.href = "#saveModal";
     document.getElementById('modalTitle').innerText = "Редактирование данных";
 
-    fetch('api/' + catatogName + '/' + id,{
-        method: 'GET',})
+    fetch('api/' + catatogName + '/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             //'wasteTypeId', 'wasteCodeList'
@@ -199,17 +199,19 @@ function showUpdate(id, catatogName) {
             $("#transportationDate").val(convetDate(result["transportationDate"]));
             $("#carNumber").val(result["carNumber"]);
             $("#driverFio").val(result["driverFio"]);
+            $("#carrierOrganizationId").val(result["carrierOrganizationId"]);
             showRecord(result["wasteTypeIdList"]);
             // showRecord('departmentId', result["departmentDtos"],'departmentList','department','id','shortName');
         })
 }
 
-function showUpdateCatalogs(id, catatogName){
+function showUpdateCatalogs(id, catatogName) {
     document.location.href = "#saveModal";
     document.getElementById('modalTitle').innerText = "Редактирование данных";
 
-    fetch('api/' + catatogName + '/' + id,{
-        method: 'GET',})
+    fetch('api/' + catatogName + '/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             let allDataElement = editingForm.getElementsByClassName("data-el");
@@ -232,8 +234,9 @@ function showUpdateJournal(id) {
     document.location.href = "#WeightModal";
     document.getElementById('modalTitle').innerText = "Редактирование данных";
 
-    fetch('api/accomp-passp/update/' + id,{
-        method: 'GET',})
+    fetch('api/accomp-passp/update/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             let html = " <thead>\n" +
@@ -249,46 +252,46 @@ function showUpdateJournal(id) {
                 "                                </tr>\n" +
                 "                                </thead>\n" +
                 "                                    <tbody ><tr>";
-            html+="<td>1</td>";
-            html+= "<td>"+result["accompPasspDto"]["number"]+"</td>";
-            html+="<td>"+result["accompPasspDto"]["accompPasspDate"]+"</td>";
-            html+="<td>"+result["accompPasspWasteDto"]["department"]["shortName"]+"</td>";
-            html+= "<td>"+result["accompPasspWasteDto"]["wasteTypeId"]["code"]+"</td>";
-            html+= "<td>"+result["accompPasspDto"]["recipientOrganizationName"]+"</td>";
-            html+= "<td>";
-            html+=   "<select id=\"sel"+result["accompPasspWasteDto"]["id"]+"\" onchange=\"saveRow("+result["accompPasspWasteDto"]["id"]+")\" class=\"weight-select\">";
-            for (let goal of result["goalDtos"]){
-                if(result["accompPasspWasteDto"]["goal"]!=null) {
+            html += "<td>1</td>";
+            html += "<td>" + result["accompPasspDto"]["number"] + "</td>";
+            html += "<td>" + result["accompPasspDto"]["accompPasspDate"] + "</td>";
+            html += "<td>" + result["accompPasspWasteDto"]["department"]["shortName"] + "</td>";
+            html += "<td>" + result["accompPasspWasteDto"]["wasteTypeId"]["code"] + "</td>";
+            html += "<td>" + result["accompPasspDto"]["recipientOrganizationName"] + "</td>";
+            html += "<td>";
+            html += "<select id=\"sel" + result["accompPasspWasteDto"]["id"] + "\" onchange=\"saveRow(" + result["accompPasspWasteDto"]["id"] + ")\" class=\"weight-select\">";
+            for (let goal of result["goalDtos"]) {
+                if (result["accompPasspWasteDto"]["goal"] != null) {
                     if (goal["id"] === result["accompPasspWasteDto"]["goal"]["id"]) {
                         html += "<option selected value=\"" + goal["id"] + "\">" + goal["name"] + "</option>";
                     } else {
                         html += "<option value=\"" + goal["id"] + "\">" + goal["name"] + "</option>";
                     }
-                }else
-                {
+                } else {
                     html += "<option value=\"" + goal["id"] + "\">" + goal["name"] + "</option>";
                 }
 
             }
 
-            html+=   "</select>";
-            html+=  " </td>";
-            html+= "<td>";
-            html+=      "<input value="+result["accompPasspWasteDto"]["wasteWeight"]+" type=\"number\" class=\"inpNumber\" id=\"inp"+result["accompPasspWasteDto"]["id"]+"\" onchange=\"saveRow("+result["accompPasspWasteDto"]["id"]+")\">";
-            html+=  "</td>";
-            html+="</tr></tbody>";
+            html += "</select>";
+            html += " </td>";
+            html += "<td>";
+            html += "<input value=" + result["accompPasspWasteDto"]["wasteWeight"] + " type=\"number\" class=\"inpNumber\" id=\"inp" + result["accompPasspWasteDto"]["id"] + "\" onchange=\"saveRow(" + result["accompPasspWasteDto"]["id"] + ")\">";
+            html += "</td>";
+            html += "</tr></tbody>";
             $("#APWeightData").html(html);
         })
 
 }
 
 function duplicate(id, catatogName) {
-    fetch('api/' + catatogName + '/' + id,{
-        method: 'PUT',})
+    fetch('api/' + catatogName + '/' + id, {
+        method: 'PUT',
+    })
         .then(() => location.reload())
 }
 
-function clearFields () {
+function clearFields() {
     document.getElementById('modalTitle').innerText = "Добавление новой записи";
     let allInput = editingForm.getElementsByTagName("input");
     for (let input of allInput) {
@@ -319,7 +322,7 @@ function showErrors(result) {
         span[i].innerHTML = '';
     }
     for (var key in result) {
-        document.getElementById(key+'Err').innerHTML = result[key];
+        document.getElementById(key + 'Err').innerHTML = result[key];
     }
 }
 
@@ -332,7 +335,7 @@ function convertFormData(key, value) {
     if (key.includes('Id') && !key.includes("departmentInfo")) {
         return Number(value);
     }
-    if (key === "number" || key === "code"){
+    if (key === "number" || key === "code") {
         return isInt(value);
     }
     if (key === "wasteWeight") {
@@ -345,7 +348,7 @@ function convertFormData(key, value) {
 }
 
 function isInt(value) {
-    if(value.includes(',') || value.includes('.') ){
+    if (value.includes(',') || value.includes('.')) {
         return null;
     }
     return Number(value);
@@ -360,8 +363,9 @@ function isDouble(value) {
 
 function infoOrg(selectId, divId) {
     let id = document.getElementById(selectId).value;
-    fetch('api/organization/' + id,{
-        method: 'GET',})
+    fetch('api/organization/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             document.getElementById(divId).setAttribute('tooltip', result['address']);
@@ -370,8 +374,9 @@ function infoOrg(selectId, divId) {
 
 function infoContr(selectId, divId) {
     let id = document.getElementById(selectId).value;
-    fetch('api/contract/' + id,{
-        method: 'GET',})
+    fetch('api/contract/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             let wasteDestination = '';
@@ -384,19 +389,21 @@ function infoContr(selectId, divId) {
 
 function infoWT(selectId, divId, fieldView) {
     let id = document.getElementById(selectId).value;
-    fetch('api/waste-type/' + id,{
-        method: 'GET',})
+    fetch('api/waste-type/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             document.getElementById(divId).setAttribute('tooltip', result[fieldView] +
-               ';\n' + result['dangerousPowName'] + ' ' + result['dangerousClassName']);
+                ';\n' + result['dangerousPowName'] + ' ' + result['dangerousClassName']);
         })
 }
 
 function infoDep(selectId, divId) {
-    let id = $('#'+selectId).val();
-    fetch('api/department/' + id,{
-        method: 'GET',})
+    let id = $('#' + selectId).val();
+    fetch('api/department/' + id, {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             document.getElementById(divId).setAttribute('tooltip-short', result['chiefPosition'] + ', ' + result['chiefFio']);
@@ -404,8 +411,9 @@ function infoDep(selectId, divId) {
 }
 
 function getNumber() {
-    fetch('api/accomp-passp/next-number',{
-        method: 'GET',})
+    fetch('api/accomp-passp/next-number', {
+        method: 'GET',
+    })
         .then(response => response.json())
         .then(result => {
             document.getElementById('number').value = result;
