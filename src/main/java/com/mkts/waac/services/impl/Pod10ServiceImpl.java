@@ -78,10 +78,11 @@ public class Pod10ServiceImpl implements Pod10Service {
             List<Integer> departmentsIndexs = new ArrayList<>();
             for (Pod9OwnWaste pod9OwnWaste:pod9ByByMonthAndYear){
                 if(pod9OwnWaste.getAccompPasspWaste()!=null) {
-                    if(pod9OwnWaste.getAccompPasspWaste().getWasteTypes().getId()==index && pod9OwnWaste.getAccompPasspWaste().getWasteWeight() != 0d)
-                    {
-                        temp.add(pod9OwnWaste);
-                        goalsNames.add(pod9OwnWaste.getAccompPasspWaste().getGoal().getName());
+                    if(pod9OwnWaste.getAccompPasspWaste().getWasteWeight()!=null) {
+                        if (pod9OwnWaste.getAccompPasspWaste().getWasteTypes().getId() == index && pod9OwnWaste.getAccompPasspWaste().getWasteWeight() != 0d) {
+                            temp.add(pod9OwnWaste);
+                            goalsNames.add(pod9OwnWaste.getAccompPasspWaste().getGoal().getName());
+                        }
                     }
                 }
             }
@@ -93,30 +94,37 @@ public class Pod10ServiceImpl implements Pod10Service {
 
             for (Pod9OwnWaste pod9OwnWaste:temp){
                 if(pod9OwnWaste.getAccompPasspWaste()!=null) {
-                    if(pod9OwnWaste.getAccompPasspWaste().getWasteTypes().getId()==index && pod9OwnWaste.getAccompPasspWaste().getWasteWeight() != 0d)
-                    {
+                        if (pod9OwnWaste.getAccompPasspWaste().getWasteTypes().getId() == index && pod9OwnWaste.getAccompPasspWaste().getWasteWeight() != 0d) {
 
-                        for (AccompPasspDepartment department :pod9OwnWaste.getAccompPasspWaste().getAccompPassps().getAccompPasspDepartments())
-                        {
-                            departmentsNames.add(department.getDepartment().getShortName());
-                            departmentsIndexs.add(department.getDepartment().getId());
-                        }
-                        for (GoalsPod10Dto goalsPod10Dto: pod10Dto.getDtoList().get(i).getGoalsPod10Dtos())
-                        {
-                            if(goalsPod10Dto.getName()==pod9OwnWaste.getAccompPasspWaste().getGoal().getName()){
-                                goalsPod10Dto.setSum(goalsPod10Dto.getSum()+pod9OwnWaste.getAccompPasspWaste().getWasteWeight());
+                            for (AccompPasspDepartment department : pod9OwnWaste.getAccompPasspWaste().getAccompPassps().getAccompPasspDepartments()) {
+                                departmentsNames.add(department.getDepartment().getShortName());
+                                departmentsIndexs.add(department.getDepartment().getId());
                             }
+                            for (GoalsPod10Dto goalsPod10Dto : pod10Dto.getDtoList().get(i).getGoalsPod10Dtos()) {
+                                if (goalsPod10Dto.getName() == pod9OwnWaste.getAccompPasspWaste().getGoal().getName()) {
+                                    goalsPod10Dto.setSum(goalsPod10Dto.getSum() + pod9OwnWaste.getAccompPasspWaste().getWasteWeight());
+                                }
+                            }
+                        } else {
+                            departmentsNames.add(pod9OwnWaste.getDepartment().getShortName());
+                            departmentsIndexs.add(pod9OwnWaste.getDepartment().getId());
                         }
-                    }
-                    else
-                    {
-                        departmentsNames.add(pod9OwnWaste.getDepartment().getShortName());
-                        departmentsIndexs.add(pod9OwnWaste.getDepartment().getId());
-                    }
+
                 }
             }
             departmentsNames = departmentsNames.stream().distinct().collect(Collectors.toList());
 //            Double summ = sum(temp);
+            if(temp==null) {
+                pod10Dto = new Pod10Dto();
+                pod10Dto.setDtoList(null);
+                return pod10Dto;
+            }else
+            {
+                if(temp.stream().count()==0){
+                    pod10Dto.setDtoList(null);
+                    return pod10Dto;
+                }
+            }
             pod10Dto.getDtoList().get(i).setWasteCode(temp.get(0).getAccompPasspWaste().getWasteTypes().getCode());
             pod10Dto.getDtoList().get(i).setWasteName(temp.get(0).getAccompPasspWaste().getWasteTypes().getName());
             pod10Dto.getDtoList().get(i).setPowAndClassDanger(

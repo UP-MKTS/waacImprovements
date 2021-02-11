@@ -53,7 +53,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${#lists.isEmpty(pod10)}">
+                    <tr th:if="${#lists.isEmpty(pod10.getDtoList())}">
                         <td th:colspan="19">Нет данных</td>
                     </tr>
                     <tr th:each="pod10, state : ${pod10.getDtoList()}">

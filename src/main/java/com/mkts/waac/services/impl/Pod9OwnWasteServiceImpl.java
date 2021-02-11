@@ -208,11 +208,11 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
         Date now = new Date();
         LocalDate date = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for (AccompPasspWaste accompPasspWaste: all){
-            if(accompPasspWaste.getWasteWeight()==0.0 &&
-                    (accompPasspWaste.getAccompPassps().getTransportationDate().getDayOfMonth()<date.getDayOfMonth() ||
-                            accompPasspWaste.getAccompPassps().getTransportationDate().getMonthValue()<date.getMonthValue()))
-            {
-                nullAll.add(accompPasspWaste);
+            if(accompPasspWaste.getWasteWeight()==null) {
+                if ((accompPasspWaste.getAccompPassps().getTransportationDate().getDayOfMonth() < date.getDayOfMonth() ||
+                        accompPasspWaste.getAccompPassps().getTransportationDate().getMonthValue() < date.getMonthValue())) {
+                    nullAll.add(accompPasspWaste);
+                }
             }
         }
 
@@ -230,7 +230,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
             sheet.getRow(numberRow-1).getCell(2).setCellValue(waste.getAccompPassps().getDepartmentsShortName(","));
         }
 
-        String reportFile = "D:\\reports\\test.xls";
+        String reportFile = "D:\\Reports\\test.xls";
 //		String reportFile = "E:\\Projects\\temp\\test.xls";
 
         try {
