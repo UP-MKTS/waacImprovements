@@ -692,8 +692,9 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
                                     sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 1, 1));
                                     sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 2, 2));
                                     sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 3, 3));
-                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - collRows, numberRow - 1, 1, 3));
-
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - collRows, numberRow - 1, 1, 1));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - collRows, numberRow - 1, 2, 2));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - collRows, numberRow - 1, 3, 3));
 
                                     cell = sheet.getRow(numberRow - (2 * collRows)).getCell(0);
                                     cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber());
@@ -707,18 +708,27 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
                                     cell = sheet.getRow(numberRow - (2 * collRows)).getCell(3);
                                     cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
 
-                                    cell = sheet.getRow(numberRow - collRows).getCell(1);
+                                    cell = sheet.getRow(numberRow - collRows).getCell(2);
                                     cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " + accompPasspJournalDto.getContractDate());
 
                                     //вывод строк отходов для одного id
                                     for (AccompPasspWasteDto dto1 : accompPasspJournalDto.getAccompPasspWasteDtoList()) {
+                                    	sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 4,4));
                                         cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(4);
                                         cell.setCellValue(dto1.getWasteTypeId().getCode());
 
+										sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 5,5));
                                         cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(5);
                                         cell.setCellValue(dto1.getWasteTypeId().getDangerousClassName());
 
+
+
 										if (dto1.getWasteWeight() != null && dto1.getGoal() != null) {
+											sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 6,6));
+											sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 7,7));
+											sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 8,8));
+											sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 9,9));
+											sheet.addMergedRegion(new CellRangeAddress((numberRow - (dtoIndex * 2)),numberRow - (dtoIndex * 2) + 1, 10,10));
 											switch (dto1.getGoal().getName()) {
 												case "Подготовку": {
 													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(6);
@@ -753,7 +763,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 												}
 											}
 										} else {
-											sheet.addMergedRegion(new CellRangeAddress(numberRow - (dtoIndex * 2), numberRow - (dtoIndex * 2), 6, 10));
+											sheet.addMergedRegion(new CellRangeAddress(numberRow - (dtoIndex * 2), numberRow - (dtoIndex * 2) + 1, 6, 10));
 											sheet.getRow(numberRow - (dtoIndex * 2)).getCell(6).setCellValue("Вывоз не производился");
 										}
 
@@ -794,15 +804,22 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
                                 cell = sheet.getRow(numberRow - 2).getCell(3);
                                 cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
 
+                                sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 4,4));
                                 cell = sheet.getRow(numberRow - 2).getCell(4);
                                 cell.setCellValue(dto.getWasteTypeId().getCode());
 
+                                sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 5,5));
                                 cell = sheet.getRow(numberRow - 2).getCell(5);
                                 cell.setCellValue(dto.getWasteTypeId().getDangerousClassName());
 
 
 
                                 if (dto.getWasteWeight() != null && dto.getGoal() != null) {
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 6,6));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 7,7));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 8,8));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 9,9));
+									sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 10,10));
                                     switch (dto.getGoal().getName()) {
                                         case "Подготовку": {
                                             cell = sheet.getRow(numberRow - 2).getCell(6);
@@ -837,7 +854,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
                                         }
                                     }
                                 } else {
-                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 2, 6, 10));
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 6, 10));
                                     sheet.getRow(numberRow - 2).getCell(6).setCellValue("Вывоз не производился");
                                 }
 
