@@ -72,6 +72,7 @@ public class AccompPasspDto {
     @Size(min = 1, message = "Добавьте код отход в список")
     private List<AccompPasspWasteDto> wasteTypeIdList;
 
+
     public String getDepartmentsShortName()
     {
         String result = "";

@@ -679,95 +679,185 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 				}
 
 				for (AccompPasspJournalDto accompPasspJournalDto : accompPasspJournalDtos) {
+					int collRows = accompPasspJournalDto.getAccompPasspWasteDtoList().size();
+					int dtoIndex = collRows;
+					List<AccompPasspWasteDto> test = accompPasspJournalDto.getAccompPasspWasteDtoList();
 					for (AccompPasspWasteDto dto : accompPasspJournalDto.getAccompPasspWasteDtoList()) {
-						int collRows = accompPasspJournalDto.getAccompPasspWasteDtoList().size();
 
-						if (accompPasspJournalDto.getAccompPasspWasteDtoList().indexOf(dto)  == collRows - 1){ // проверка на последний элемент внутреннего списка
+                            if (collRows != 1) {                                        // проверка если не один элемент СП
+                                if (accompPasspJournalDto.getAccompPasspWasteDtoList().indexOf(dto) == collRows - 1) { // проверка на последний элемент внутреннего списка
+                                    numberRow = createRow(sheet, numberRow, true, 2 * collRows, 11);
 
-						}
-						numberRow = createRow(sheet, numberRow, true, 2 * collRows, 11);
-						sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, numberRow - 1, 0, 0));
-
-
-
-							cell = sheet.getRow(numberRow - 2).getCell(0);
-							cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber()); // объеденить по id столбец
-
-							cell = sheet.getRow(numberRow - 2).getCell(1);
-							cell.setCellValue(accompPasspJournalDto.getTransportationDate()); // объеденить по id столбец
-
-							cell = sheet.getRow(numberRow - 2).getCell(2);        // объеденить по id столбец
-							cell.setCellValue(accompPasspJournalDto.getDepartmentsShortName());
-
-							cell = sheet.getRow(numberRow - 1).getCell(2);        // объеденить по id столбец
-							cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " + accompPasspJournalDto.getContractDate());
-
-						cell = sheet.getRow(numberRow - 2).getCell(3);
-						cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
-
-						cell = sheet.getRow(numberRow - 2).getCell(4);
-						cell.setCellValue(dto.getWasteTypeId().getCode());
-
-						cell = sheet.getRow(numberRow - 2).getCell(5);
-						cell.setCellValue(dto.getWasteTypeId().getDangerousClassName());
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, numberRow - 1, 0, 0));
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 1, 1));
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 2, 2));
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2 * collRows, (numberRow - collRows) - 1, 3, 3));
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - collRows, numberRow - 1, 1, 3));
 
 
+                                    cell = sheet.getRow(numberRow - (2 * collRows)).getCell(0);
+                                    cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber());
 
-						if (dto.getWasteWeight() != null && dto.getGoal() != null) {
-							switch (dto.getGoal().getName()) {
-								case "Подготовку": {
-									cell = sheet.getRow(numberRow - 2).getCell(6);
-									break;
-								}
-								case "Использование": {
-									cell = sheet.getRow(numberRow - 2).getCell(7);
-									break;
-								}
-								case "Обезвреживание": {
-									cell = sheet.getRow(numberRow - 2).getCell(8);
-									break;
-								}
-								case "Захоронение": {
-									cell = sheet.getRow(numberRow - 2).getCell(9);
-									break;
-								}
-								case "Хранение": {
-									cell = sheet.getRow(numberRow - 2).getCell(10);
-									break;
-								}
-								default: {
-									cell = sheet.getRow(numberRow - 2).getCell(10);
-									break;
-								}
-							}
-							cell.setCellValue(dto.getWasteWeight());
-							for (int i = 6; i < sheet.getRow(numberRow - 2).getLastCellNum(); i++) {
-								cell = sheet.getRow(numberRow - 2).getCell(i);
-								if (cell.getNumericCellValue() == 0.0) {
-									cell.setCellValue("-");
-								}
-							}
-						} else {
-							sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 2, 6, 10));
-							sheet.getRow(numberRow - 2).getCell(6).setCellValue("Вывоз не производился");
-						}
+                                    cell = sheet.getRow(numberRow - (2 * collRows)).getCell(1);
+                                    cell.setCellValue(accompPasspJournalDto.getTransportationDate());
 
-						for (int i = 0; i < sheet.getRow(numberRow - 2).getLastCellNum(); i++) {
-							cell = sheet.getRow(numberRow - 2).getCell(i);
-							cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, stylesBorder.borderStyleT));
-							cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
-						}
+                                    cell = sheet.getRow(numberRow - (2 * collRows)).getCell(2);
+                                    cell.setCellValue(accompPasspJournalDto.getDepartmentsShortName());
 
-						for (int i = 0; i < sheet.getRow(numberRow - 1).getLastCellNum(); i++) {
-							cell = sheet.getRow(numberRow - 1).getCell(i);
-							cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, stylesBorder.borderStyleT));
-							cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
-						}
+                                    cell = sheet.getRow(numberRow - (2 * collRows)).getCell(3);
+                                    cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
 
-						cell = sheet.getRow(numberRow - 2).getCell(0);
-						cell.getCellStyle().setFont(setFont(workbook, (short) 14, IndexedColors.BLACK, true, false));
-					}
-				}
+                                    cell = sheet.getRow(numberRow - collRows).getCell(1);
+                                    cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " + accompPasspJournalDto.getContractDate());
+
+                                    //вывод строк отходов для одного id
+                                    for (AccompPasspWasteDto dto1 : accompPasspJournalDto.getAccompPasspWasteDtoList()) {
+                                        cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(4);
+                                        cell.setCellValue(dto1.getWasteTypeId().getCode());
+
+                                        cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(5);
+                                        cell.setCellValue(dto1.getWasteTypeId().getDangerousClassName());
+
+										if (dto1.getWasteWeight() != null && dto1.getGoal() != null) {
+											switch (dto1.getGoal().getName()) {
+												case "Подготовку": {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(6);
+													break;
+												}
+												case "Использование": {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(7);
+													break;
+												}
+												case "Обезвреживание": {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(8);
+													break;
+												}
+												case "Захоронение": {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(9);
+													break;
+												}
+												case "Хранение": {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(10);
+													break;
+												}
+												default: {
+													cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(10);
+													break;
+												}
+											}
+											cell.setCellValue(dto1.getWasteWeight());
+											for (int i = 6; i < sheet.getRow(numberRow - (dtoIndex * 2)).getLastCellNum(); i++) {
+												cell = sheet.getRow(numberRow - (dtoIndex * 2)).getCell(i);
+												if (cell.getNumericCellValue() == 0.0) {
+													cell.setCellValue("-");
+												}
+											}
+										} else {
+											sheet.addMergedRegion(new CellRangeAddress(numberRow - (dtoIndex * 2), numberRow - (dtoIndex * 2), 6, 10));
+											sheet.getRow(numberRow - (dtoIndex * 2)).getCell(6).setCellValue("Вывоз не производился");
+										}
+
+										for (int i = 0; i < sheet.getRow(numberRow - (2 * collRows)).getLastCellNum(); i++) {
+											for (int j = numberRow - (2 * collRows); j < numberRow; j++) {
+												cell = sheet.getRow(j).getCell(i);
+												cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, stylesBorder.borderStyleT));
+												cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+											}
+										}
+
+
+										cell = sheet.getRow(numberRow - (2 * collRows)).getCell(0);
+										cell.getCellStyle().setFont(setFont(workbook, (short) 14, IndexedColors.BLACK, true, false));
+
+                                        dtoIndex--; // переход к следующему элементу с несколькими строками СП
+                                    }
+
+                                }
+                            } else						// для СП с 1-й строкой
+                            	{
+                                numberRow = createRow(sheet, numberRow, true, 2, 11);
+                                sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 1, 0, 0));
+
+
+                                cell = sheet.getRow(numberRow - 2).getCell(0);
+                                cell.setCellValue(accompPasspJournalDto.getAccompPasspNumber()); // объеденить по id столбец
+
+                                cell = sheet.getRow(numberRow - 2).getCell(1);
+                                cell.setCellValue(accompPasspJournalDto.getTransportationDate()); // объеденить по id столбец
+
+                                cell = sheet.getRow(numberRow - 2).getCell(2);        // объеденить по id столбец
+                                cell.setCellValue(accompPasspJournalDto.getDepartmentsShortName());
+
+                                cell = sheet.getRow(numberRow - 1).getCell(2);        // объеденить по id столбец
+                                cell.setCellValue("Договор №" + accompPasspJournalDto.getContractNumber() + " от " + accompPasspJournalDto.getContractDate());
+
+                                cell = sheet.getRow(numberRow - 2).getCell(3);
+                                cell.setCellValue(accompPasspJournalDto.getRecipientOrganizationName());
+
+                                cell = sheet.getRow(numberRow - 2).getCell(4);
+                                cell.setCellValue(dto.getWasteTypeId().getCode());
+
+                                cell = sheet.getRow(numberRow - 2).getCell(5);
+                                cell.setCellValue(dto.getWasteTypeId().getDangerousClassName());
+
+
+
+                                if (dto.getWasteWeight() != null && dto.getGoal() != null) {
+                                    switch (dto.getGoal().getName()) {
+                                        case "Подготовку": {
+                                            cell = sheet.getRow(numberRow - 2).getCell(6);
+                                            break;
+                                        }
+                                        case "Использование": {
+                                            cell = sheet.getRow(numberRow - 2).getCell(7);
+                                            break;
+                                        }
+                                        case "Обезвреживание": {
+                                            cell = sheet.getRow(numberRow - 2).getCell(8);
+                                            break;
+                                        }
+                                        case "Захоронение": {
+                                            cell = sheet.getRow(numberRow - 2).getCell(9);
+                                            break;
+                                        }
+                                        case "Хранение": {
+                                            cell = sheet.getRow(numberRow - 2).getCell(10);
+                                            break;
+                                        }
+                                        default: {
+                                            cell = sheet.getRow(numberRow - 2).getCell(10);
+                                            break;
+                                        }
+                                    }
+                                    cell.setCellValue(dto.getWasteWeight());
+                                    for (int i = 6; i < sheet.getRow(numberRow - 2).getLastCellNum(); i++) {
+                                        cell = sheet.getRow(numberRow - 2).getCell(i);
+                                        if (cell.getNumericCellValue() == 0.0) {
+                                            cell.setCellValue("-");
+                                        }
+                                    }
+                                } else {
+                                    sheet.addMergedRegion(new CellRangeAddress(numberRow - 2, numberRow - 2, 6, 10));
+                                    sheet.getRow(numberRow - 2).getCell(6).setCellValue("Вывоз не производился");
+                                }
+
+                                for (int i = 0; i < sheet.getRow(numberRow - 2).getLastCellNum(); i++) {
+                                    cell = sheet.getRow(numberRow - 2).getCell(i);
+                                    cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, stylesBorder.borderStyleT));
+                                    cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+                                }
+
+                                for (int i = 0; i < sheet.getRow(numberRow - 1).getLastCellNum(); i++) {
+                                    cell = sheet.getRow(numberRow - 1).getCell(i);
+                                    cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, stylesBorder.borderStyleT));
+                                    cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+                                }
+
+                                cell = sheet.getRow(numberRow - 2).getCell(0);
+                                cell.getCellStyle().setFont(setFont(workbook, (short) 14, IndexedColors.BLACK, true, false));
+                            }
+                        }
+                    }
 			}
 		}
 		String reportFile = "D:\\reports\\test.xls";
