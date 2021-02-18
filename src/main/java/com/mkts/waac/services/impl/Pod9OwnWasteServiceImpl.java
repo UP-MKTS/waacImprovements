@@ -218,16 +218,18 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
 
         XSSFSheet sheet = workbook.createSheet("Выборка");
         Integer numberRow = 0;
-        numberRow = createRow(sheet, numberRow, true, 1, 3);
-        sheet.getRow(numberRow-1).getCell(0).setCellValue("Код отхода");
-        sheet.getRow(numberRow-1).getCell(1).setCellValue("Дата вывоза");
-        sheet.getRow(numberRow-1).getCell(2).setCellValue("Подразделение");
+        numberRow = createRow(sheet, numberRow, true, 1, 4);
+        sheet.getRow(numberRow-1).getCell(0).setCellValue("№СП");
+        sheet.getRow(numberRow-1).getCell(1).setCellValue("Код отхода");
+        sheet.getRow(numberRow-1).getCell(2).setCellValue("Дата вывоза");
+        sheet.getRow(numberRow-1).getCell(3).setCellValue("Подразделение");
 
         for (AccompPasspWaste waste:nullAll){
-            numberRow = createRow(sheet, numberRow, true, 1, 3);
-            sheet.getRow(numberRow-1).getCell(0).setCellValue(waste.getWasteTypes().getCode());
-            sheet.getRow(numberRow-1).getCell(1).setCellValue(dateConverter(waste.getAccompPassps().getTransportationDate(),"."));
-            sheet.getRow(numberRow-1).getCell(2).setCellValue(waste.getAccompPassps().getDepartmentsShortName(","));
+            numberRow = createRow(sheet, numberRow, true, 1, 4);
+            sheet.getRow(numberRow-1).getCell(0).setCellValue(waste.getAccompPassps().getNumber());
+            sheet.getRow(numberRow-1).getCell(1).setCellValue(waste.getWasteTypes().getCode());
+            sheet.getRow(numberRow-1).getCell(2).setCellValue(dateConverter(waste.getAccompPassps().getTransportationDate(),"."));
+            sheet.getRow(numberRow-1).getCell(3).setCellValue(waste.getAccompPassps().getDepartmentsShortName(","));
         }
 
         String reportFile = "D:\\Reports\\test.xls";
@@ -423,7 +425,7 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
             sheet.getRow(numberRow-1).getCell(2).setCellValue("количество, т (шт.)");
             sheet.getRow(numberRow-1).getCell(3).setCellValue("наименование организации, структурного подразделения");
 
-            sheet.getRow(numberRow-2).getCell(4).setCellValue("Поступило от физических лиц, т. (шт.)");
+            sheet.getRow(numberRow-2).getCell(4).setCellValue("Поступило от арендаторов, т. (шт.)");
 
             sheet.getRow(numberRow-2).getCell(5).setCellValue("Использовано, т (шт.)");
 
@@ -464,13 +466,18 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
                         pod9OwnWaste.getAccompPasspWaste()!=null?
                                 pod9OwnWaste.getAccompPasspWaste().getGoal()!=null?
                                         setVal(pod9OwnWaste.getAccompPasspWaste().getGoal().getName()):"-":"-");
-                row.getCell(10).setCellValue(setVal(pod9OwnWaste.getCountKeeping()));
-
                 for (int j = 0; j<sheet.getRow(numberRow-1).getLastCellNum();j++){
                     sheet.getRow(numberRow-1).getCell(j).setCellStyle(setCellAlignmeng(workbook,HorizontalAlignment.CENTER,VerticalAlignment.CENTER,false,stylesBorder.borderStyleT));
                     sheet.getRow(numberRow-1).getCell(j).getCellStyle().setFont(setFont(workbook,(short)10,IndexedColors.BLACK,false,false));
                 }
-
+                if (pod9OwnWaste.getCountKeeping() == null) {
+                    row.getCell(10).setCellValue(setVal(pod9OwnWaste.getCountKeeping()));
+                }else if (pod9OwnWaste.getCountKeeping() < 0.0) {
+                    row.getCell(10).getCellStyle().setFont(setFont(workbook,(short)9,IndexedColors.RED,true,false));
+                    row.getCell(10).setCellValue(setVal(pod9OwnWaste.getCountKeeping()));
+                } else {
+                    row.getCell(10).setCellValue(setVal(pod9OwnWaste.getCountKeeping()));
+                }
             }
             numberRow = createRow(sheet,numberRow,true,2,11);
             sheet.addMergedRegion(new CellRangeAddress(numberRow-1, numberRow-1, 0, 3));

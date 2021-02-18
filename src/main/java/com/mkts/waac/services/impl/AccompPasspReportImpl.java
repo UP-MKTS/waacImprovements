@@ -446,19 +446,19 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 		}
 
 
-		numberRow = createRow(sheet,numberRow,true,2,12);
+			numberRow = createRow(sheet, numberRow, true, 2, 12);
 
-		sheet.getRow(numberRow-2).getCell(0).setCellValue(dateConverter(accompPassp.getTransportationDate(),"/"));
-		sheet.getRow(numberRow-2).getCell(1).setCellValue(accompPassp.getCarModel());
-		sheet.getRow(numberRow-1).getCell(1).setCellValue(accompPassp.getCarNumber());
-		sheet.getRow(numberRow-2).getCell(2).setCellValue(accompPassp.getDriverFio());
+			sheet.getRow(numberRow-2).getCell(0).setCellValue(dateConverter(accompPassp.getTransportationDate(), "/"));
+			sheet.getRow(numberRow-2).getCell(1).setCellValue(accompPassp.getCarModel());
+			sheet.getRow(numberRow-1).getCell(1).setCellValue(accompPassp.getCarNumber());
+			sheet.getRow(numberRow-2).getCell(2).setCellValue(accompPassp.getDriverFio());
 
-		sheet.getRow(numberRow-2).getCell(3).setCellValue(accompPassp.getWastesCodes("\n"));
-		sheet.getRow(numberRow-2).getCell(4).setCellValue(accompPassp.getWastesDangerousPow("\n"));
-		sheet.getRow(numberRow-2).getCell(5).setCellValue("***");
-		sheet.getRow(numberRow-2).getCell(6).setCellValue(accompPassp.getBoxing());
-		sheet.getRow(numberRow-2).getCell(7).setCellValue("-");
-		sheet.getRow(numberRow-2).getCell(11).setCellValue("-");
+			sheet.getRow(numberRow-2).getCell(3).setCellValue(accompPassp.getWastesCodes("\n"));
+			sheet.getRow(numberRow-2).getCell(4).setCellValue(accompPassp.getWastesDangerousPow("\n"));
+			sheet.getRow(numberRow-2).getCell(5).setCellValue("***");
+			sheet.getRow(numberRow-2).getCell(6).setCellValue(accompPassp.getBoxing());
+			sheet.getRow(numberRow-2).getCell(7).setCellValue("-");
+			sheet.getRow(numberRow-2).getCell(11).setCellValue("-");
 
 		for (int j = 0; j<sheet.getRow(numberRow-1).getLastCellNum();j++){
 			if(j!=1) {
