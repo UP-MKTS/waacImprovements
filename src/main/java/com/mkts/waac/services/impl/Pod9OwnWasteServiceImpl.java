@@ -517,6 +517,45 @@ public class Pod9OwnWasteServiceImpl implements Pod9OwnWasteService {
             cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
             cell.getCellStyle().setFont(setFont(workbook, (short) 6, IndexedColors.BLACK, false, true));
 
+            numberRow = createRow(sheet,numberRow, true,1, 12);
+            numberRow = createRow(sheet,numberRow, true,1, 12);
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 0, 1));
+            cell = sheet.getRow(numberRow-1).getCell(0);
+            cell.setCellValue("Проверил");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+
+
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 2,4));
+            cell = sheet.getRow(numberRow-1).getCell(2);
+            cell.setCellValue("________________________");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 5,7));
+            cell = sheet.getRow(numberRow-1).getCell(5);
+            cell.setCellValue("________________________");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 8,10));
+            cell = sheet.getRow(numberRow-1).getCell(8);
+            cell.setCellValue("\"_______  _____  г");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, false));
+
+            numberRow = createRow(sheet,numberRow, true,1, 12);
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 2,4));
+            cell = sheet.getRow(numberRow-1).getCell(2);
+            cell.setCellValue("(должность, подпись)");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 6, IndexedColors.BLACK, false, true));
+
+            sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 5,7));
+            cell = sheet.getRow(numberRow-1).getCell(5);
+            cell.setCellValue("(инициалы, фамилия)");
+            cell.setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
+            cell.getCellStyle().setFont(setFont(workbook, (short) 6, IndexedColors.BLACK, false, true));
         }
 
 

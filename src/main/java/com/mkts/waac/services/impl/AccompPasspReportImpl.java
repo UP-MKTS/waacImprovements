@@ -36,7 +36,7 @@ import java.util.*;
 @Transactional
 public class AccompPasspReportImpl implements AccompPasspReportService {
 
-	private static final String PATH = "D:\\Lagvinovich\\Проекты\\";
+	private static final String PATH = "D:\\test.xls";                                  //"D:\\Lagvinovich\\Проекты\\";
 	private static final String fileAccomp = "СП 725 ТЗУ подметь от 25.09.2020.xlsx";
 
 	@Autowired
@@ -474,7 +474,16 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 
 		}
 
+		ArrayList<String> chiefFio = new ArrayList<>();
+		outer:
 		for (AccompPasspWaste department: accompPassp.getAccompPasspWastes()) {
+			for (int i=0; i < chiefFio.size(); i++){
+				if (department.getDepartment().getChiefFio() == chiefFio.get(i)){
+					continue outer;
+				}
+			}
+			chiefFio.add(department.getDepartment().getChiefFio());
+
 			numberRow = createRow(sheet, numberRow, true, 2, 12);
 			sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 0, 2));
 			sheet.addMergedRegion(new CellRangeAddress(numberRow - 1, numberRow - 1, 3, 5));
@@ -501,7 +510,10 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 				sheet.getRow(numberRow - 1).getCell(j).getCellStyle().setFont(setFont(workbook, (short) 10, IndexedColors.BLACK, false, true));
 			}
 			numberRow = createRow(sheet, numberRow, true, 1, 12);
+
+
 		}
+		chiefFio.clear();
 //		CellRangeAddress addresses = new CellRangeAddress(numberRow-1,numberRow-1,3,7);
 //		RegionUtil.setBorderTop(BorderStyle.THIN,addresses,sheet);
 //		addresses = new CellRangeAddress(numberRow-1,numberRow-1,9,11);
@@ -517,6 +529,7 @@ public class AccompPasspReportImpl implements AccompPasspReportService {
 			sheet.getRow(numberRow - 1).getCell(j).setCellStyle(setCellAlignmeng(workbook, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, null));
 			sheet.getRow(numberRow - 1).getCell(j).getCellStyle().setFont(setFont(workbook, (short) 12, IndexedColors.BLACK, false, false));
 		}
+
 //		addresses = new CellRangeAddress(numberRow-1,numberRow-1,3,7);
 //		RegionUtil.setBorderBottom(BorderStyle.THIN,addresses,sheet);
 //		addresses = new CellRangeAddress(numberRow-1,numberRow-1,9,11);
