@@ -11,7 +11,7 @@
                     <div class="preTableContainer">
                         <a href="#saveModal" class="btn" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')"><button type="button" class="button" th:onclick="setCurrentValue()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
                         <input type="button" class="button" value="EXCEL" onclick="downloadPod9('pod9')"><br>
-                        <input sec:authorize="hasAnyAuthority('admin','supervisor')" type="button" class="button" value="Не предоставили сведения" onclick="downloadSved()">
+                        <input sec:authorize="hasAnyAuthority('admin','supervisor','reader')" type="button" class="button" value="Не предоставили сведения" onclick="downloadSved()">
                     </div>
                     <div class="preTableContainer">
                         <div class="preTableContainer dep-container">
@@ -27,7 +27,8 @@
                                     th:utext="${department.getShortName()}"></option>
                         </select>
                         <select class="pod9-title-sel" id = "department" onchange="changeDepartment(this.value)" sec:authorize="hasAnyAuthority('user')">
-                            <option th:value="${departments[0].getId()}" th:utext="${departments[0].getShortName()}"></option>
+                            <option th:value="${departments[0].getId()}"
+                                    th:utext="${departments[0].getShortName()}"></option>
                         </select>
 <!--                        <b class="text-size-18" sec:authorize="hasAnyAuthority('user')" id = "department" th:text="${departments[0].getShortName()}"></b>-->
                     </div>
