@@ -67,7 +67,7 @@ public class AccompPasspController {
 
         List<DepartmentDto> departmentDtos = new ArrayList<>();
         Integer departmentId = signedInAccount.getDepartmentId();
-        if (userRole.equals("admin")||userRole.equals("supervisor")) {
+        if (userRole.equals("admin")||userRole.equals("supervisor")||userRole.equals("reader")) {
             departmentDtos = departmentService.getAll("shortName");
             departmentId = departmentDtos.get(0).getId();
         } else {
@@ -95,7 +95,7 @@ public class AccompPasspController {
             }
         };
 
-        if((!userRole.equals("admin"))&&(!userRole.equals("supervisor"))) {
+        if((!userRole.equals("admin"))&&(!userRole.equals("supervisor"))&&!userRole.equals("reader")) {
             filter(accompPasspDtos, accompPasspPredicate);
         }
         List<OrganizationDto> organizationDtos = organizationService.getAll();

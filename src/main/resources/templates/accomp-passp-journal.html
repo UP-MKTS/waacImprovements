@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:insert="pattern :: header"></head>
     <body th:onload="createWeightTable()">
         <div th:insert="pattern :: menu"></div>
@@ -31,7 +31,7 @@
                     <div class="preTableContainer"  >
                         <input type="button" class="button" value="EXCEL" onclick="downloadJournal('accomp-passp-journal',document.getElementById('year').value)">
                     </div>
-                    <div class="preTableContainer">
+                    <div class="preTableContainer" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')">
                         <a href="#WeightModal" class="btn"><button type="button" class="button"><i class="fa fa-cubes"></i> ВВОД КОЛИЧЕСТВА ОТХОДОВ</button></a>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                                 <td th:utext="${accompPasspWaste.getGoalName()}"></td>
                                 <td th:utext="${accompPasspWaste.getWasteWeight()}"></td>
                                 <td>
-                                    <div id="parent" >
+                                    <div id="parent" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')">
                                         <i class="fa fa-edit fa-lg border" th:onclick="'showUpdateJournal('+ ${accompPasspWaste.getId()}+')'"></i>
                                     </div>
                                 </td>

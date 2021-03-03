@@ -22,7 +22,7 @@ public class WaacWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/styles/**",
 						"/images/**")
 				.permitAll()
-				.antMatchers("/catalog/**", "/accomp-passp", "/accomp-passp-journal").hasAnyAuthority("admin", "editor","user", "supervisor")
+				.antMatchers("/catalog/**", "/accomp-passp", "/accomp-passp-journal").hasAnyAuthority("admin", "editor","user", "supervisor", "reader")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()

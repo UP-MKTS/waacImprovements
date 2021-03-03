@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" >
     <head th:insert="pattern :: header"></head>
     <body>
         <div th:insert="pattern :: menu"></div>
@@ -9,7 +9,7 @@
                 <script src="scripts/pod9-manager.js"></script>
                 <div class="upContainer">
                     <div class="preTableContainer">
-                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick="setCurrentValue()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                        <a href="#saveModal" class="btn" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')"><button type="button" class="button" th:onclick="setCurrentValue()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
                         <input type="button" class="button" value="EXCEL" onclick="downloadPod9('pod9')"><br>
                         <input sec:authorize="hasAnyAuthority('admin','supervisor')" type="button" class="button" value="Не предоставили сведения" onclick="downloadSved()">
                     </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="preTableContainer dep-container">
                         <span class="text-size-18">Подразделение: </span>
-                        <select class="pod9-title-sel" id = "department" onchange="changeDepartment(this.value)" sec:authorize="hasAnyAuthority('admin', 'editor','supervisor')">
+                        <select class="pod9-title-sel" id = "department" onchange="changeDepartment(this.value)" sec:authorize="hasAnyAuthority('admin', 'editor','supervisor','reader')">
                             <option th:each="department : ${departments}"
                                     th:value="${department.getId()}"
                                     th:utext="${department.getShortName()}"></option>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:insert="pattern :: header"></head>
     <body>
         <div th:insert="pattern :: menu"></div>
@@ -8,9 +8,9 @@
                 <link href="styles/data-table.css" rel="stylesheet">
                 <link href="styles/details-table.css" rel="stylesheet">
                 <script src="scripts/AP-details.js"></script>
-                <div class="upContainer">
+                <div class="upContainer" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')">
                     <div class="preTableContainer">
-                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick="getNumber()"><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
+                        <a href="#saveModal" class="btn"><button type="button" class="button" th:onclick="getNumber()" ><i class="fa fa-plus"></i> НОВАЯ ЗАПИСЬ</button></a>
                     </div>
 
                     <div class="title">
@@ -55,7 +55,7 @@
                             </div>
                         </td>
                         <td>
-                            <div id="parent" >
+                            <div id="parent" sec:authorize="hasAnyAuthority('admin', 'editor','user','supervisor')">
                                 <i class="fa fa-edit fa-lg border" th:onclick="'showUpdate('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>&nbsp;
                                 <i class="fa fa-copy fa-lg border" th:onclick="'duplicate('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>
                                 <i class="fa fa-trash-o fa-lg border" th:onclick="'remove('+ ${accompPassp.getId()} + ', \'accomp-passp\')'"></i>
