@@ -121,3 +121,7 @@ span {
 .inpNumber::-webkit-inner-spin-button {
     display: none;
 }
+#userPassword {
+    word-break: break-all;
+    word-wrap: break-word;
+}

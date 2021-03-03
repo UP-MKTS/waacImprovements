@@ -49,7 +49,7 @@
                         <td title="Статус пользователя: заблокирован / активен">
                             <i class="fa" th:classappend="${user.getActivated()} ? 'fa-check green' : 'fa-ban red'"></i>
                         </td>
-                        <td class="left" th:utext="${user.getPassword()}"></td>
+                        <td class="left" id="userPassword" th:utext="${user.getPassword()}"></td>
                         <td class="left" th:utext="${user.getDateLogin()}"></td>
                         <td class="left" th:utext="${user.getDateDestroy()}"></td>
                         <td>
